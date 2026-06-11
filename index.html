@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="phosphor">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JARVIS — the terminal AI harness agent</title>
+  <meta name="description" content="Jarvis is an AI harness agent that lives in your terminal. Multi-provider, agentic, skill-driven. Install in 3 steps." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>▚</text></svg>" />
+</head>
+<body>
+
+  <!-- ░░ BOOT PRELOADER ░░ -->
+  <div id="boot" aria-hidden="true">
+    <pre id="boot-log"></pre>
+    <div class="boot-skip">[ press any key to skip ]</div>
+  </div>
+
+  <!-- ░░ ATMOSPHERE ░░ -->
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="flicker" aria-hidden="true"></div>
+
+  <!-- ░░ CUSTOM CURSOR ░░ -->
+  <div class="cursor" id="cursor" aria-hidden="true"><span></span></div>
+
+  <!-- ░░ NAV ░░ -->
+  <header class="nav">
+    <a class="nav-logo" href="#top" data-hover>
+      <span class="logo-block">▚</span>
+      <span class="logo-text">JARVIS<em>.sys</em></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#install" data-hover>install</a>
+      <a href="#features" data-hover>features</a>
+      <a href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" data-hover>source</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-gh" href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" data-hover aria-label="Star on GitHub">
+        <i data-lucide="github"></i><span>STAR</span>
+      </a>
+      <button class="nav-mode" id="mode-toggle" data-hover aria-label="Toggle amber mode">
+        <i data-lucide="zap"></i><span>AMBER</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ░░ HERO ░░ -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow reveal">
+          <span class="blink">●</span> SYSTEM ONLINE — v2.4 / harness-agent
+        </div>
+
+        <h1 class="hero-title glitch" data-text="JARVIS">JARVIS</h1>
+
+        <p class="hero-sub reveal">
+          An <b>AI harness agent</b> that lives in your terminal.<br/>
+          Multi-provider. Agentic. Skill-driven. <span class="amber-ink">Dangerously fast.</span>
+        </p>
+
+        <div class="hero-ctas reveal">
+          <a href="#install" class="btn btn-solid" data-hover data-magnetic>
+            <i data-lucide="terminal"></i> INSTALL IN 3 STEPS
+          </a>
+          <a href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" class="btn btn-ghost" data-hover data-magnetic>
+            <i data-lucide="github"></i> VIEW SOURCE
+          </a>
+        </div>
+
+        <div class="hero-meta reveal">
+          <span><i data-lucide="cpu"></i> anthropic · openrouter · opencode</span>
+          <span><i data-lucide="keyboard"></i> pure TUI — zero browser tax</span>
+          <span><i data-lucide="git-fork"></i> 100% open source</span>
+          <span class="meta-free"><i data-lucide="infinity"></i> free unlimited models built in — no API key needed</span>
+        </div>
+      </div>
+
+      <!-- live terminal -->
+      <div class="hero-right reveal">
+        <div class="term" id="term" data-hover>
+          <div class="term-bar">
+            <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+            <span class="term-title">~/dev — jarvis</span>
+            <span class="term-net"><i data-lucide="activity"></i></span>
+          </div>
+          <div class="term-body" id="term-body" aria-live="off"></div>
+        </div>
+        <div class="term-shadow" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ░░ MARQUEE ░░ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>TEXTUAL TUI ✚ MULTI-PROVIDER AUTH ✚ DYNAMIC TOOL ROUTER ✚ AGENTS ✚ SKILLS ✚ MCP SERVERS ✚ 15 THEMES ✚ MACOS CONTROL ✚ SQLITE SESSIONS ✚&nbsp;</span>
+        <span>TEXTUAL TUI ✚ MULTI-PROVIDER AUTH ✚ DYNAMIC TOOL ROUTER ✚ AGENTS ✚ SKILLS ✚ MCP SERVERS ✚ 15 THEMES ✚ MACOS CONTROL ✚ SQLITE SESSIONS ✚&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- ░░ INSTALL — 3 STEPS ░░ -->
+    <section class="install" id="install">
+      <div class="section-head">
+        <span class="section-tag reveal">// DEPLOYMENT PROTOCOL</span>
+        <h2 class="section-title scramble reveal" data-scramble="INSTALL IN 3 STEPS">INSTALL IN 3 STEPS</h2>
+        <p class="section-sub reveal">No accounts. No clicking around. Brew, curl, summon.</p>
+      </div>
+
+      <div class="steps">
+        <article class="step reveal" data-tilt data-hover>
+          <div class="step-num" aria-hidden="true">01</div>
+          <div class="step-info">
+            <h3><i data-lucide="wrench"></i> PREP THE RUNTIME</h3>
+            <p>Grab Python 3.11 via Homebrew — the only prerequisite.</p>
+            <div class="code" data-cmd="brew install python@3.11">
+              <pre><span class="ps1">$</span> brew install python@3.11</pre>
+              <button class="copy" data-hover aria-label="Copy command"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+          <div class="step-glow" aria-hidden="true"></div>
+        </article>
+
+        <article class="step reveal" data-tilt data-hover>
+          <div class="step-num" aria-hidden="true">02</div>
+          <div class="step-info">
+            <h3><i data-lucide="cloud-download"></i> RUN THE INSTALLER</h3>
+            <p>One command pulls the source, builds the environment, and registers the <code>jarvis</code> CLI.</p>
+            <div class="code" data-cmd="curl -fsSL https://raw.githubusercontent.com/PrajsRamteke/harness-agent/main/scripts/install | bash">
+              <pre><span class="ps1">$</span> curl -fsSL https://raw.githubusercontent.com/PrajsRamteke/harness-agent/main/scripts/install | bash</pre>
+              <button class="copy" data-hover aria-label="Copy command"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+          <div class="step-glow" aria-hidden="true"></div>
+        </article>
+
+        <article class="step reveal" data-tilt data-hover>
+          <div class="step-num" aria-hidden="true">03</div>
+          <div class="step-info">
+            <h3><i data-lucide="sparkles"></i> SUMMON</h3>
+            <p>That's it. Launch the TUI, authenticate once — API key or OAuth — and start commanding.</p>
+            <div class="code" data-cmd="jarvis">
+              <pre><span class="ps1">$</span> jarvis</pre>
+              <button class="copy" data-hover aria-label="Copy command"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+          <div class="step-glow" aria-hidden="true"></div>
+        </article>
+      </div>
+
+      <p class="install-note reveal">
+        <i data-lucide="key-round"></i>
+        optional: <code>export ANTHROPIC_API_KEY=sk-...</code> to skip the auth prompt entirely
+      </p>
+    </section>
+
+    <!-- ░░ FREE MODELS ░░ -->
+    <section class="freebie" id="free">
+      <div class="freebie-frame reveal" data-hover>
+        <span class="freebie-tag">// ZERO-COST PROTOCOL</span>
+        <h2 class="freebie-title glitch" data-text="FREE MODELS. NO LIMITS.">FREE MODELS.<br/>NO LIMITS.</h2>
+        <p class="freebie-sub">
+          Jarvis ships with <b>unlimited free LLMs</b> out of the box.
+          Pick a free model and go — forever, for nothing.
+        </p>
+        <ul class="freebie-list">
+          <li><i data-lucide="user-x"></i> NO LOGIN</li>
+          <li><i data-lucide="key-round"></i> NO API KEY</li>
+          <li><i data-lucide="gauge"></i> NO RATE LIMITS</li>
+          <li><i data-lucide="infinity"></i> JUST UNLIMITED</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ░░ FEATURES ░░ -->
+    <section class="features" id="features">
+      <div class="section-head">
+        <span class="section-tag reveal">// CAPABILITY MATRIX</span>
+        <h2 class="section-title scramble reveal" data-scramble="BUILT LIKE A WEAPON">BUILT LIKE A WEAPON</h2>
+      </div>
+
+      <div class="grid">
+        <article class="cell reveal" data-hover>
+          <i data-lucide="layout-panel-top"></i>
+          <h3>TEXTUAL TUI</h3>
+          <p>A full terminal interface — command palette, pickers, live streaming. Your shell, upgraded.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="shuffle"></i>
+          <h3>DYNAMIC TOOL ROUTER</h3>
+          <p>Scans the conversation and arms only the tools it needs. Lean context, sharp answers.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="bot"></i>
+          <h3>AGENTS</h3>
+          <p>Markdown-defined personas with their own models and prompts. Tab to cycle. One key, new brain.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="book-open-text"></i>
+          <h3>SKILLS</h3>
+          <p>SKILL.md packs auto-invoked when the task matches. Teach it once, it remembers forever.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="plug-zap"></i>
+          <h3>MCP SERVERS</h3>
+          <p>Plug into the Model Context Protocol ecosystem. External tools, first-class citizens.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="command"></i>
+          <h3>MACOS CONTROL</h3>
+          <p>AppleScript, JXA, UI reading, clicks, keystrokes. It doesn't just talk — it operates the machine.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="palette"></i>
+          <h3>15 THEMES</h3>
+          <p>Cyberpunk to dracula to monochrome. Live-switch with <code>/theme</code>. Mood matters.</p>
+        </article>
+        <article class="cell reveal" data-hover>
+          <i data-lucide="database"></i>
+          <h3>SQLITE SESSIONS</h3>
+          <p>Every conversation persisted locally. Resume any session. Your data never leaves the disk.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ░░ FINAL CTA ░░ -->
+    <section class="outro">
+      <h2 class="outro-title glitch" data-text="SUMMON IT.">SUMMON IT.</h2>
+      <div class="code code-xl reveal" data-cmd="curl -fsSL https://raw.githubusercontent.com/PrajsRamteke/harness-agent/main/scripts/install | bash">
+        <pre><span class="ps1">$</span> curl -fsSL https://raw.githubusercontent.com/PrajsRamteke/harness-agent/main/scripts/install | bash</pre>
+        <button class="copy" data-hover aria-label="Copy command"><i data-lucide="copy"></i></button>
+      </div>
+      <div class="outro-actions reveal">
+        <a href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" class="btn btn-ghost" data-hover data-magnetic>
+          <i data-lucide="github"></i> STAR ON GITHUB
+        </a>
+      </div>
+      <p class="outro-hint reveal">psst — try pressing <kbd>J</kbd> <kbd>A</kbd> <kbd>R</kbd> <kbd>V</kbd> <kbd>I</kbd> <kbd>S</kbd> anywhere on this page</p>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <span class="footer-left"><span class="logo-block">▚</span> JARVIS.sys — harness agent</span>
+    <span class="footer-mid">EOF — no bytes were harmed</span>
+    <a class="footer-right" href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" data-hover>⌁ open source · github.com/PrajsRamteke/harness-agent</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status">COPIED TO CLIPBOARD ✓</div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
