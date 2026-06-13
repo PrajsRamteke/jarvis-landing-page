@@ -337,3 +337,21 @@ const scramble = (el) => {
     }
   });
 })();
+
+// ── mobile nav ──────────────────────────────────────────
+const hamburger = document.getElementById('nav-hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileOverlay = document.getElementById('mobile-overlay');
+function toggleMenu(open) {
+  if (!hamburger || !mobileMenu || !mobileOverlay) return;
+  hamburger.classList.toggle('open', open);
+  mobileMenu.classList.toggle('open', open);
+  mobileOverlay.classList.toggle('open', open);
+}
+if (hamburger && mobileMenu && mobileOverlay) {
+  hamburger.addEventListener('click', () => toggleMenu(!mobileMenu.classList.contains('open')));
+  mobileOverlay.addEventListener('click', () => toggleMenu(false));
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => toggleMenu(false));
+  });
+}

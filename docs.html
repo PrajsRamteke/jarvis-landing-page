@@ -1,2572 +1,830 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jarvis — The Harness Agent Docs</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
-    rel="stylesheet">
-  <style>
-    /* ── reset ──────────────────────────────────────────── */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px
-    }
-
-    :root {
-      --nav-w: 270px
-    }
-
-    body {
-      font-family: 'Archivo', system-ui, sans-serif;
-      background: #0a0a0f;
-      color: #e2e2e8;
-      line-height: 1.65;
-      min-height: 100vh;
-      display: flex
-    }
-
-    a {
-      color: #7eb8ff;
-      text-decoration: none;
-      transition: color .2s
-    }
-
-    a:hover {
-      color: #a8d1ff
-    }
-
-    code {
-      font-family: 'DM Mono', monospace;
-      font-size: .85em;
-      background: rgba(255, 255, 255, .06);
-      padding: .1em .4em;
-      border-radius: 4px;
-      color: #d4d4e6
-    }
-
-    pre {
-      font-family: 'DM Mono', monospace;
-      font-size: .82rem;
-      background: #12121c;
-      border: 1px solid rgba(255, 255, 255, .07);
-      border-radius: 10px;
-      padding: 1.2rem 1.4rem;
-      overflow-x: auto;
-      margin: 1rem 0;
-      line-height: 1.55;
-      tab-size: 2
-    }
-
-    pre code {
-      background: none;
-      padding: 0;
-      color: inherit
-    }
-
-    ::selection {
-      background: rgba(126, 184, 255, .3);
-      color: #fff
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, .12);
-      border-radius: 3px
-    }
-
-    /* ── sidebar ────────────────────────────────────────── */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: var(--nav-w);
-      background: #0e0e17;
-      border-right: 1px solid rgba(255, 255, 255, .06);
-      overflow-y: auto;
-      padding: 1.6rem 0 2rem;
-      z-index: 100
-    }
-
-    nav .logo {
-      display: flex;
-      align-items: center;
-      gap: .7rem;
-      padding: 0 1.4rem 1.4rem;
-      border-bottom: 1px solid rgba(255, 255, 255, .06);
-      margin-bottom: 1rem
-    }
-
-    nav .logo svg {
-      flex-shrink: 0
-    }
-
-    nav .logo h1 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #eaeaf2;
-      letter-spacing: -.01em
-    }
-
-    nav .logo span {
-      font-size: .7rem;
-      color: #7b7b9b;
-      display: block;
-      font-weight: 400
-    }
-
-    #search {
-      display: block;
-      width: calc(100% - 2rem);
-      margin: 0 1rem .9rem;
-      padding: .55rem .8rem;
-      background: #16161f;
-      border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: 7px;
-      color: #e2e2e8;
-      font-family: 'Archivo', sans-serif;
-      font-size: .82rem;
-      outline: none;
-      transition: border .2s
-    }
-
-    #search:focus {
-      border-color: rgba(126, 184, 255, .4)
-    }
-
-    #search::placeholder {
-      color: #555
-    }
-
-    nav .section {
-      margin-bottom: .2rem
-    }
-
-    nav .section-title {
-      padding: .3rem 1.4rem;
-      font-size: .65rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: #5a5a7a;
-      cursor: default
-    }
-
-    nav a {
-      display: block;
-      padding: .32rem 1.4rem .32rem 1.8rem;
-      font-size: .82rem;
-      color: #9a9ab2;
-      transition: all .15s;
-      border-left: 2px solid transparent
-    }
-
-    nav a:hover {
-      color: #d4d4ee;
-      background: rgba(126, 184, 255, .04)
-    }
-
-    nav a.active {
-      color: #7eb8ff;
-      border-left-color: #7eb8ff;
-      background: rgba(126, 184, 255, .06);
-      font-weight: 500
-    }
-
-    /* ── main ───────────────────────────────────────────── */
-    main {
-      margin-left: var(--nav-w);
-      flex: 1;
-      max-width: 860px;
-      padding: 2.8rem 3rem 6rem
-    }
-
-    main h2 {
-      margin: 2.8rem 0 .6rem;
-      font-size: 1.65rem;
-      font-weight: 600;
-      letter-spacing: -.02em;
-      color: #f0f0f8
-    }
-
-    main h2:first-child {
-      margin-top: 0
-    }
-
-    main h3 {
-      margin: 2rem 0 .3rem;
-      font-size: 1.15rem;
-      font-weight: 500;
-      color: #d8d8ec
-    }
-
-    main h4 {
-      margin: 1.4rem 0 .2rem;
-      font-size: .95rem;
-      font-weight: 500;
-      color: #b8b8d0
-    }
-
-    main p {
-      margin: .7rem 0;
-      color: #c8c8dc
-    }
-
-    main ul,
-    main ol {
-      margin: .5rem 0 .8rem 1.4rem;
-      color: #c8c8dc
-    }
-
-    main li {
-      margin: .2rem 0
-    }
-
-    main hr {
-      border: none;
-      border-top: 1px solid rgba(255, 255, 255, .06);
-      margin: 2.4rem 0
-    }
-
-    /* tables */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: .88rem
-    }
-
-    th,
-    td {
-      text-align: left;
-      padding: .55rem .8rem;
-      border-bottom: 1px solid rgba(255, 255, 255, .07);
-      color: #c8c8dc
-    }
-
-    th {
-      color: #7a7a9a;
-      font-weight: 600;
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: .06em
-    }
-
-    /* callouts */
-    .callout {
-      padding: 1rem 1.2rem;
-      margin: 1.2rem 0;
-      border-radius: 8px;
-      border-left: 3px solid;
-      font-size: .9rem
-    }
-
-    .callout.info {
-      background: rgba(126, 184, 255, .08);
-      border-color: #7eb8ff;
-      color: #b8d4ff
-    }
-
-    .callout.warn {
-      background: rgba(255, 200, 50, .08);
-      border-color: #ffc832;
-      color: #f0d878
-    }
-
-    .callout.caution {
-      background: rgba(255, 80, 80, .08);
-      border-color: #ff5050;
-      color: #ffa0a0
-    }
-
-    .callout code {
-      background: rgba(255, 255, 255, .08)
-    }
-
-    /* tags */
-    .tag {
-      display: inline-block;
-      font-size: .68rem;
-      font-weight: 600;
-      padding: .15rem .55rem;
-      border-radius: 100px;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      vertical-align: middle;
-      margin-left: .4rem
-    }
-
-    .tag.new {
-      background: rgba(126, 184, 255, .15);
-      color: #7eb8ff
-    }
-
-    .tag.mac {
-      background: rgba(100, 200, 100, .15);
-      color: #6c6
-    }
-
-    .tag.core {
-      background: rgba(255, 200, 100, .15);
-      color: #fc8
-    }
-
-    /* kbd */
-    kbd {
-      display: inline-block;
-      padding: .1em .5em;
-      font-family: 'DM Mono', monospace;
-      font-size: .78em;
-      background: #1a1a28;
-      border: 1px solid rgba(255, 255, 255, .12);
-      border-radius: 5px;
-      color: #d0d0e4;
-      box-shadow: 0 1px 0 rgba(255, 255, 255, .08);
-      vertical-align: middle
-    }
-
-    /* theme toggle */
-    #theme-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1.5rem;
-      z-index: 200;
-      background: #16161f;
-      border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: 8px;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #b0b0c8;
-      font-size: 1.1rem;
-      transition: all .2s
-    }
-
-    #theme-toggle:hover {
-      background: #1e1e2e;
-      color: #e0e0f0
-    }
-
-    /* scroll indicator */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: var(--nav-w);
-      right: 0;
-      height: 2px;
-      background: rgba(255, 255, 255, .05);
-      z-index: 99
-    }
-
-    .scroll-progress span {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, #7eb8ff, #a78bfa);
-      transition: width .1s
-    }
-
-    /* ── light theme ────────────────────────────────────── */
-    [data-theme="light"] body {
-      background: #f5f5fa;
-      color: #1e1e2e
-    }
-
-    [data-theme="light"] nav {
-      background: #eeeef5;
-      border-color: rgba(0, 0, 0, .07)
-    }
-
-    [data-theme="light"] nav .logo h1 {
-      color: #1a1a2e
-    }
-
-    [data-theme="light"] nav .logo span {
-      color: #7a7a9a
-    }
-
-    [data-theme="light"] #search {
-      background: #fff;
-      border-color: rgba(0, 0, 0, .1);
-      color: #1e1e2e
-    }
-
-    [data-theme="light"] nav a {
-      color: #555
-    }
-
-    [data-theme="light"] nav a:hover {
-      background: rgba(0, 0, 0, .03);
-      color: #222
-    }
-
-    [data-theme="light"] nav a.active {
-      background: rgba(126, 184, 255, .1);
-      color: #3b82f6
-    }
-
-    [data-theme="light"] main h2 {
-      color: #1a1a2e
-    }
-
-    [data-theme="light"] main h3 {
-      color: #2a2a3e
-    }
-
-    [data-theme="light"] main h4 {
-      color: #3a3a4e
-    }
-
-    [data-theme="light"] main p,
-    main li,
-    table td {
-      color: #3a3a4e
-    }
-
-    [data-theme="light"] th {
-      color: #7a7a9a
-    }
-
-    [data-theme="light"] pre {
-      background: #eeeef5;
-      border-color: rgba(0, 0, 0, .08)
-    }
-
-    [data-theme="light"] pre code {
-      color: #1e1e2e
-    }
-
-    [data-theme="light"] code {
-      background: rgba(0, 0, 0, .06);
-      color: #1e1e3e
-    }
-
-    [data-theme="light"] #theme-toggle {
-      background: #e4e4ee;
-      border-color: rgba(0, 0, 0, .1);
-      color: #555
-    }
-
-    [data-theme="light"] #theme-toggle:hover {
-      background: #d4d4e4
-    }
-
-    [data-theme="light"] kbd {
-      background: #e4e4ee;
-      border-color: rgba(0, 0, 0, .15);
-      color: #333
-    }
-
-    [data-theme="light"] a {
-      color: #2563eb
-    }
-
-    [data-theme="light"] .callout.info {
-      background: rgba(37, 99, 235, .08);
-      color: #1e40af
-    }
-
-    [data-theme="light"] .callout.warn {
-      background: rgba(245, 158, 11, .08);
-      color: #92400e
-    }
-
-    [data-theme="light"] .callout.caution {
-      background: rgba(220, 38, 38, .08);
-      color: #991b1b
-    }
-
-    /* ── responsive ─────────────────────────────────────── */
-    @media(max-width:820px) {
-      nav {
-        width: 220px;
-        font-size: 14px
-      }
-
-      main {
-        margin-left: 220px;
-        padding: 2rem 1.6rem 4rem
-      }
-    }
-
-    @media(max-width:640px) {
-      nav {
-        position: relative;
-        width: 100%;
-        height: auto;
-        max-height: 50vh;
-        overflow-y: auto;
-        padding: .8rem 0
-      }
-
-      main {
-        margin-left: 0;
-        padding: 1.4rem 1rem 4rem
-      }
-
-      #search {
-        width: calc(100% - 1.6rem);
-        margin: .4rem .8rem
-      }
-
-      .scroll-progress {
-        left: 0
-      }
-
-      #theme-toggle {
-        top: .5rem;
-        right: .8rem;
-        width: 32px;
-        height: 32px
-      }
-    }
-
-    /* ── feature cards ──────────────────────────────────── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: .8rem;
-      margin: 1.2rem 0
-    }
-
-    .feature-card {
-      background: rgba(255, 255, 255, .03);
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: 10px;
-      padding: 1rem 1.1rem;
-      transition: all .2s
-    }
-
-    .feature-card:hover {
-      background: rgba(255, 255, 255, .06);
-      border-color: rgba(126, 184, 255, .2);
-      transform: translateY(-1px)
-    }
-
-    .feature-card .icon {
-      font-size: 1.3rem;
-      margin-bottom: .3rem
-    }
-
-    .feature-card h4 {
-      font-size: .85rem;
-      font-weight: 600;
-      margin: 0 0 .2rem;
-      color: #e0e0ee
-    }
-
-    .feature-card p {
-      font-size: .78rem;
-      color: #9a9ab2;
-      margin: 0
-    }
-
-    [data-theme="light"] .feature-card {
-      background: rgba(0, 0, 0, .02);
-      border-color: rgba(0, 0, 0, .06)
-    }
-
-    [data-theme="light"] .feature-card:hover {
-      background: rgba(0, 0, 0, .04)
-    }
-
-    [data-theme="light"] .feature-card h4 {
-      color: #2a2a3e
-    }
-
-    [data-theme="light"] .feature-card p {
-      color: #6a6a7e
-    }
-
-    /* cmd list */
-    .cmd-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: .5rem;
-      margin: .8rem 0
-    }
-
-    .cmd-item {
-      background: rgba(255, 255, 255, .02);
-      border: 1px solid rgba(255, 255, 255, .05);
-      border-radius: 7px;
-      padding: .55rem .8rem;
-      font-size: .82rem
-    }
-
-    .cmd-item .cmd {
-      font-family: 'DM Mono', monospace;
-      font-weight: 500;
-      color: #7eb8ff
-    }
-
-    .cmd-item .desc {
-      color: #9a9ab2;
-      margin-top: .1rem;
-      font-size: .78rem
-    }
-
-    [data-theme="light"] .cmd-item {
-      background: rgba(0, 0, 0, .02);
-      border-color: rgba(0, 0, 0, .06)
-    }
-
-    [data-theme="light"] .cmd-item .desc {
-      color: #6a6a7e
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jarvis — The Harness Agent Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" defer></script>
+<style>
+:root{--nav-w:260px;--toc-w:200px;--accent:#7eb8ff;--accent2:#a78bfa;--bg:#07070e;--bg2:#0c0c18;--surface:#111120;--surface2:#1a1a2e;--text:#e2e2ee;--text2:#a8a8c4;--text3:#6a6a8a;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--font:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono','SF Mono',monospace}
+[data-theme="light"]{--bg:#f6f6fc;--bg2:#eeeff5;--surface:#fff;--surface2:#f0f1f8;--text:#1e1e32;--text2:#4a4a6a;--text3:#8a8aaa;--border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;scroll-padding-top:80px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;display:flex}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:#a8d1ff}
+code{font-family:var(--mono);font-size:.83em;background:rgba(255,255,255,.06);padding:.1em .45em;border-radius:4px;color:var(--text)}
+[data-theme="light"] code{background:rgba(0,0,0,.06)}
+pre{font-family:var(--mono);font-size:.8rem;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;overflow-x:auto;margin:.9rem 0;line-height:1.55;position:relative}
+pre code{background:0;padding:0;color:inherit;font-size:inherit}
+pre .lbl{position:absolute;top:.4rem;right:.7rem;font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);background:var(--bg);padding:.1rem .5rem;border-radius:4px;border:1px solid var(--border)}
+pre .cpy{position:absolute;top:.4rem;right:.7rem;opacity:0;transition:opacity .25s;background:var(--surface);border:1px solid var(--border);color:var(--text2);border-radius:4px;cursor:pointer;padding:.15rem .45rem;font-size:.65rem;font-family:var(--font)}
+pre .lbl+.cpy{right:3.5rem}
+pre:hover .cpy{opacity:1}
+pre .cpy.done{background:#1a3a1a;border-color:#2a5a2a;color:#6c6}
+::selection{background:rgba(126,184,255,.25)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+
+/* sidebar */
+#sb{position:fixed;top:0;left:0;bottom:0;width:var(--nav-w);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;padding:1.2rem 0 2rem;z-index:100;transition:transform .3s}
+#sb .lg{display:flex;align-items:center;gap:.65rem;padding:0 1.2rem 1.1rem;border-bottom:1px solid var(--border);margin-bottom:.8rem}
+#sb .lg .mk{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+#sb .lg h1{font-size:1rem;font-weight:600;color:var(--text);letter-spacing:-.01em}
+#sb .lg h1 sm{font-size:.62rem;font-weight:400;color:var(--text3);display:block}
+#q{display:block;width:calc(100% - 1.6rem);margin:0 .8rem .7rem;padding:.5rem .75rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:.8rem;outline:none}
+#q:focus{border-color:rgba(126,184,255,.4)}
+#q::placeholder{color:var(--text3)}
+#qr{display:none;padding:0 .8rem .5rem;font-size:.7rem;color:var(--text3)}
+#qr.s{display:block}
+.ng{margin-bottom:.1rem}
+.ngt{padding:.25rem 1.2rem;font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3)}
+.ngt .nc{font-size:.58rem;color:var(--text3);background:var(--surface);padding:0 .35rem;border-radius:3px;margin-left:.4rem}
+#sb a{display:block;padding:.3rem 1.2rem .3rem 1.6rem;font-size:.8rem;color:var(--text2);border-left:2px solid transparent;transition:all .15s}
+#sb a:hover{color:var(--text);background:rgba(126,184,255,.04)}
+#sb a.on{color:var(--accent);border-left-color:var(--accent);background:rgba(126,184,255,.06);font-weight:500}
+#sb a.hide{display:none}
+
+/* right toc */
+#pt{position:fixed;top:4rem;right:1.2rem;width:var(--toc-w);max-height:calc(100vh - 6rem);overflow-y:auto;z-index:50}
+#pt .ptt{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:.4rem}
+#pt a{display:block;font-size:.72rem;color:var(--text3);padding:.15rem 0 .15rem .6rem;border-left:1px solid var(--border);line-height:1.5}
+#pt a:hover{color:var(--text2);border-left-color:var(--text2)}
+#pt a.on{color:var(--accent);border-left-color:var(--accent);font-weight:500}
+#pt a.h3{padding-left:1.2rem;font-size:.68rem}
+
+/* main */
+main{margin-left:var(--nav-w);flex:1;max-width:740px;padding:2rem 2.5rem 6rem}
+.bc{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text3);margin-bottom:1.2rem;flex-wrap:wrap;position:sticky;top:0;z-index:30;padding:.6rem 0;background:var(--bg);border-bottom:1px solid transparent}
+.bc .vb{font-family:var(--mono);font-size:.65rem;background:linear-gradient(135deg,rgba(126,184,255,.12),rgba(167,139,250,.12));border:1px solid rgba(126,184,255,.15);padding:.05rem .5rem;border-radius:100px;margin-left:auto;color:var(--accent);white-space:nowrap}
+h2{margin:2.6rem 0 .5rem;font-size:1.55rem;font-weight:600;color:var(--text);letter-spacing:-.015em;display:flex;align-items:center;gap:.5rem}
+h2:first-child{margin-top:0}
+h3{margin:1.8rem 0 .2rem;font-size:1.1rem;font-weight:500;color:var(--text)}
+h4{margin:1.2rem 0 .1rem;font-size:.9rem;font-weight:500;color:var(--text2)}
+h2 .an,h3 .an{opacity:0;font-size:.7em;color:var(--text3);font-weight:400;transition:opacity .2s;margin-left:.2rem}
+h2:hover .an,h3:hover .an{opacity:1}
+p{margin:.6rem 0;color:var(--text2)}
+ul,ol{margin:.4rem 0 .7rem 1.3rem;color:var(--text2)}
+li{margin:.15rem 0;color:var(--text2)}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
+strong{color:var(--text)}
+.tw{overflow-x:auto;margin:.8rem 0}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--border);color:var(--text2)}
+th{color:var(--text3);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;border-bottom-color:var(--border2);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+
+/* callouts */
+.co{padding:.85rem 1.1rem;margin:1rem 0;border-radius:8px;border-left:3px solid;font-size:.87rem}
+.co.i{background:rgba(126,184,255,.06);border-color:var(--accent);color:#b0d0ff}
+.co.w{background:rgba(255,200,50,.06);border-color:#ffc832;color:#e8d070}
+.co.c{background:rgba(255,80,80,.06);border-color:#ff5050;color:#ffa0a0}
+[data-theme="light"] .co.i{color:#1e40af;background:rgba(37,99,235,.05)}
+[data-theme="light"] .co.w{color:#92400e;background:rgba(245,158,11,.05)}
+[data-theme="light"] .co.c{color:#991b1b;background:rgba(220,38,38,.05)}
+
+/* tags */
+.tg{display:inline-block;font-size:.62rem;font-weight:600;padding:.1rem .5rem;border-radius:100px;letter-spacing:.02em;text-transform:uppercase;vertical-align:middle;margin-left:.35rem}
+.tg.n{background:rgba(126,184,255,.12);color:var(--accent)}
+.tg.m{background:rgba(100,200,100,.12);color:#6c6}
+.tg.c{background:rgba(255,200,100,.12);color:#fc8}
+.tg.p{background:rgba(167,139,250,.12);color:var(--accent2)}
+
+/* kbd */
+kbd{display:inline-block;padding:.08em .5em;font-family:var(--mono);font-size:.76em;background:var(--surface);border:1px solid var(--border2);border-radius:5px;color:var(--text2);box-shadow:0 1px 0 var(--border2);vertical-align:middle}
+
+/* floating */
+#tt{position:fixed;top:.9rem;right:calc(1.2rem + var(--toc-w) + 1rem);z-index:80;background:var(--surface);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--text2);font-size:1.05rem;font-family:var(--font);transition:all .2s;display:flex;align-items:center;justify-content:center}
+#tt:hover{background:var(--surface2);color:var(--text)}
+#bt{position:fixed;bottom:2rem;right:calc(1.2rem + var(--toc-w) + .5rem);z-index:80;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:1.1rem;transition:all .3s;opacity:0;pointer-events:none;transform:translateY(10px);display:flex;align-items:center;justify-content:center}
+#bt.v{opacity:1;pointer-events:auto;transform:translateY(0)}
+#bt:hover{background:var(--surface2);color:var(--text)}
+.sp{position:fixed;top:0;left:var(--nav-w);right:0;height:2px;z-index:90;background:rgba(255,255,255,.03)}
+.sp sp{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* nav mobile */
+#nt{display:none;position:fixed;top:.7rem;left:.7rem;z-index:110;background:var(--surface);border:1px solid var(--border);border-radius:8px;width:36px;height:36px;cursor:pointer;color:var(--text2);font-size:1.2rem;align-items:center;justify-content:center}
+#no{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+
+/* highlights bar */
+.hb{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:1.2rem 0 1.8rem;background:linear-gradient(135deg,rgba(126,184,255,.03),rgba(167,139,250,.03));border:1px solid rgba(126,184,255,.08);border-radius:12px;padding:1rem 1.2rem}
+.hi{display:flex;align-items:flex-start;gap:.6rem;padding:.25rem 0}
+.hn{font-family:var(--mono);font-size:.6rem;font-weight:600;color:var(--accent);background:rgba(126,184,255,.1);padding:.05rem .4rem;border-radius:3px;line-height:1.6;white-space:nowrap;margin-top:1px}
+.hi div st{display:block;font-size:.8rem;color:var(--text);margin-bottom:.05rem}
+.hi div sp{font-size:.72rem;color:var(--text2)}
+
+/*feature grid*/
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.6rem;margin:1rem 0}
+.fc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;transition:all .25s}
+.fc:hover{background:var(--surface2);border-color:rgba(126,184,255,.15);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.fc .fi{font-size:1.2rem;margin-bottom:.25rem;display:flex;align-items:center;height:22px}
+.fc h4{font-size:.82rem;font-weight:600;margin:0 0 .15rem;color:var(--text)}
+.fc p{font-size:.74rem;color:var(--text2);margin:0}
+
+/* cmd grid */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.4rem;margin:.6rem 0}
+.ci{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.45rem .7rem;font-size:.8rem}
+.ci:hover{border-color:rgba(126,184,255,.15)}
+.ci .cm{font-family:var(--mono);font-weight:500;color:var(--accent);font-size:.82rem}
+.ci .cd{color:var(--text2);margin-top:.05rem;font-size:.74rem}
+
+/* faq */
+details.fq{margin:.5rem 0;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+details.fq[open]{border-color:rgba(126,184,255,.2)}
+details.fq summary{padding:.65rem .9rem;cursor:pointer;font-weight:500;font-size:.85rem;color:var(--text);display:flex;align-items:center;gap:.5rem;list-style:none;user-select:none}
+details.fq summary::-webkit-details-marker{display:none}
+details.fq summary .fi{font-size:.7rem;color:var(--text3);transition:transform .2s;flex-shrink:0}
+details.fq[open] summary .fi{transform:rotate(90deg)}
+details.fq .fb{padding:.1rem .9rem .7rem;font-size:.82rem;color:var(--text2)}
+details.fq .fb p{margin:.3rem 0;color:var(--text2);font-size:.82rem}
+
+/* theme gallery */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;margin:.8rem 0}
+.tc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.6rem;text-align:center}
+.tc:hover{border-color:rgba(126,184,255,.2)}
+.tc .sw{width:100%;height:28px;border-radius:4px;margin-bottom:.3rem;display:flex;align-items:center;justify-content:center;gap:3px}
+.tc .sw sp{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.1)}
+.tc .tn{font-size:.7rem;color:var(--text2);font-weight:500}
+
+/* cheatsheet */
+.cs{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem;margin:1rem 0}
+.csi{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem .8rem}
+.csi .cc{font-family:var(--mono);font-size:.73rem;color:var(--accent);font-weight:500}
+.csi .cd{font-size:.68rem;color:var(--text3);margin-top:.05rem}
+
+/* fade-in */
+.fd{opacity:0;transform:translateY(12px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
+.fd.v{opacity:1;transform:translateY(0)}
+
+/* toast */
+.ts{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:.6rem 1rem;font-size:.8rem;color:var(--text2);z-index:200;opacity:0;pointer-events:none;transition:all .4s cubic-bezier(.22,1,.36,1);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.ts.s{opacity:1;transform:translateX(-50%) translateY(0)}
+.ts kbd{margin:0 .1em}
+
+/* light mode overrides */
+[data-theme="light"] .fc:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+[data-theme="light"] .hb{background:rgba(37,99,235,.03);border-color:rgba(37,99,235,.12)}
+[data-theme="light"] .hn{background:rgba(37,99,235,.1);color:#2563eb}
+[data-theme="light"] a{color:#2563eb}
+[data-theme="light"] .tg.n{background:rgba(37,99,235,.1);color:#2563eb}
+[data-theme="light"] .tg.m{background:rgba(34,197,94,.1);color:#16a34a}
+[data-theme="light"] .tg.c{background:rgba(234,179,8,.1);color:#ca8a04}
+[data-theme="light"] pre{background:#f0f1f8;border-color:rgba(0,0,0,.08)}
+[data-theme="light"] kbd{background:#e8e9f0;border-color:rgba(0,0,0,.12)}
+[data-theme="light"] #sb a.on{background:rgba(37,99,235,.06)}
+[data-theme="light"] .bc .vb{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.15)}
+[data-theme="light"] details.fq{background:var(--surface)}
+[data-theme="light"] .ci:hover,.tc:hover,.fc:hover{border-color:rgba(37,99,235,.15)}
+
+@media(max-width:1280px){#pt{display:none}#tt{right:1.2rem}#bt{right:1.2rem}}
+@media(max-width:768px){
+  #sb{transform:translateX(-100%)}
+  #sb.s{transform:translateX(0)}
+  #nt{display:flex}
+  #no.s{display:block}
+  main{margin-left:0;padding:1.2rem 1rem 4rem}
+  .sp{left:0}
+  #tt{top:.7rem;right:.7rem}
+  .hb{grid-template-columns:1fr}
+  .fg{grid-template-columns:1fr 1fr}
+  .cg{grid-template-columns:1fr}
+  .gal{grid-template-columns:repeat(5,1fr)}
+  #bt{bottom:1rem;right:1rem}
+}
+@media(max-width:480px){
+  .fg{grid-template-columns:1fr}
+  .gal{grid-template-columns:repeat(3,1fr)}
+  h2{font-size:1.3rem}
+}
+
+</style>
 </head>
-
 <body>
 
-  <nav id="sidebar">
-    <div class="logo">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-        <rect width="30" height="30" rx="7" fill="#7eb8ff" fill-opacity=".15" /><text x="15" y="20" text-anchor="middle"
-          font-family="DM Mono" font-size="15" font-weight="700" fill="#7eb8ff">J</text>
-      </svg>
-      <div>
-        <h1>Jarvis</h1>
-        <span>Harness Agent &mdash; v0.1</span>
-      </div>
-    </div>
-    <input id="search" type="text" placeholder="Search docs…" oninput="filterNav()">
-    <div class="section">
-      <div class="section-title">Getting Started</div>
-      <a href="#intro" class="active">Overview</a>
-      <a href="#install">Install</a>
-      <a href="#auth">Authentication</a>
-    </div>
-    <div class="section">
-      <div class="section-title">Usage</div>
-      <a href="#tui">TUI Interface</a>
-      <a href="#cli">CLI Reference</a>
-      <a href="#slash">Slash Commands</a>
-      <a href="#web-remote">Web Remote</a>
-    </div>
-    <div class="section">
-      <div class="section-title">Tools</div>
-      <a href="#tools">Tool Reference</a>
-      <a href="#context-tools">Context Tools</a>
-      <a href="#tool-repair">Tool Repair</a>
-      <a href="#plan-mode">Plan Mode</a>
-    </div>
-    <div class="section">
-      <div class="section-title">Customize</div>
-      <a href="#config">Configuration</a>
-      <a href="#env">Environment Variables</a>
-      <a href="#themes">Themes</a>
-      <a href="#shortcuts">Keyboard Shortcuts</a>
-      <a href="#providers">Providers</a>
-    </div>
-    <div class="section">
-      <div class="section-title">Extend</div>
-      <a href="#agents">Agents</a>
-      <a href="#skills">Skills</a>
-      <a href="#commands">Custom Commands</a>
-      <a href="#mcp">MCP Support</a>
-      <a href="#memory">Memory</a>
-      <a href="#lessons">Lessons</a>
-    </div>
-    <div class="section">
-      <div class="section-title">Project</div>
-      <a href="#context">Project Context</a>
-      <a href="#sessions">Sessions</a>
-      <a href="#pin">Pinned Context</a>
-      <a href="#no-jail">No Project Jail</a>
-      <a href="#troubleshooting">Troubleshooting</a>
-    </div>
-  </nav>
+<button id="nt" aria-label="Menu">☰</button>
+<div id="no"></div>
 
-  <button id="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
+<nav id="sb">
+  <div class="lg">
+    <div class="mk">J</div>
+    <h1>Jarvis <sm>Harness Agent v0.1</sm></h1>
+  </div>
+  <input id="q" type="text" placeholder="Search docs…" autocomplete="off">
+  <div id="qr"></div>
+  <div class="ng"><div class="ngt">Getting Started <span class="nc">3</span></div>
+    <a href="#intro" class="on">Overview</a>
+    <a href="#install">Install</a>
+    <a href="#auth">Authentication</a>
+  </div>
+  <div class="ng"><div class="ngt">Usage <span class="nc">4</span></div>
+    <a href="#tui">TUI Interface</a>
+    <a href="#cli">CLI Reference</a>
+    <a href="#slash">Slash Commands</a>
+    <a href="#web-remote">Web Remote</a>
+  </div>
+  <div class="ng"><div class="ngt">Tools <span class="nc">4</span></div>
+    <a href="#tools">Tool Reference</a>
+    <a href="#context-tools">Context Tools</a>
+    <a href="#tool-repair">Tool Repair</a>
+    <a href="#plan-mode">Plan Mode</a>
+  </div>
+  <div class="ng"><div class="ngt">Customize <span class="nc">5</span></div>
+    <a href="#config">Configuration</a>
+    <a href="#env">Environment Variables</a>
+    <a href="#themes">Themes</a>
+    <a href="#shortcuts">Keyboard Shortcuts</a>
+    <a href="#providers">Providers</a>
+  </div>
+  <div class="ng"><div class="ngt">Extend <span class="nc">6</span></div>
+    <a href="#agents">Agents</a>
+    <a href="#skills">Skills</a>
+    <a href="#commands">Custom Commands</a>
+    <a href="#mcp">MCP Support</a>
+    <a href="#memory">Memory</a>
+    <a href="#lessons">Lessons</a>
+  </div>
+  <div class="ng"><div class="ngt">Project <span class="nc">6</span></div>
+    <a href="#context">Project Context</a>
+    <a href="#sessions">Sessions</a>
+    <a href="#pin">Pinned Context</a>
+    <a href="#no-jail">No Project Jail</a>
+    <a href="#faq">FAQ</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+  </div>
+</nav>
 
-  <div class="scroll-progress"><span id="progress"></span></div>
+<button id="tt" aria-label="Toggle theme">☀</button>
+<button id="bt" aria-label="Back to top">↑</button>
+<div class="sp"><span id="pr"></span></div>
 
-  <main id="main">
+<nav id="pt" aria-label="On this page">
+  <div class="ptt">On this page</div>
+  <div id="tl"></div>
+</nav>
 
-    <!-- ──────────────── INTRO ──────────────── -->
-    <h2 id="intro">Overview</h2>
-    <p><strong>Jarvis</strong> is a <strong>terminal-native AI coding agent</strong> — the Harness Agent that lives in
-      your terminal. Talk to it, and it reads/writes files, runs shell commands, searches code, manages git, controls
-      macOS apps, OCRs images, browses the web, and gets work done right where your code lives.</p>
+<main>
+<div class="bc">
+  <a href="index.html">Home</a><span>›</span><span>Docs</span>
+  <span class="vb">v0.1 · <span id="ld">Jun 2026</span></span>
+</div>
 
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="icon">💬</div>
-        <h4>Interactive TUI</h4>
-        <p>Rich Textual-based terminal UI with streaming, panels, and markdown rendering.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🔐</div>
-        <h4>Dual Auth</h4>
-        <p>API key, OAuth PKCE, OpenRouter, OpenCode Zen — multiple auth paths.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">📁</div>
-        <h4>File Operations</h4>
-        <p>Read, write, edit, multi-edit, glob, rank, fast-find — full filesystem access.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🐚</div>
-        <h4>Shell Access</h4>
-        <p>Run any shell command, view output inline — no context switching.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">⎇</div>
-        <h4>Git Integration</h4>
-        <p>Status, diff, log — all from the chat. Undo/redo with git-backed safety.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🖥️</div>
-        <h4>macOS Control</h4>
-        <p>Launch apps, click UI, type text, AppleScript, notifications, clipboard, TTS.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🌐</div>
-        <h4>Web Access</h4>
-        <p>Search, fetch URLs, verified multi-source fact checking.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🧠</div>
-        <h4>Persistent Memory</h4>
-        <p>Remembers facts about you. Self-learns lessons from past sessions.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🔌</div>
-        <h4>MCP Support</h4>
-        <p>Model Context Protocol — connect external tools and data sources.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🎨</div>
-        <h4>15+ Themes</h4>
-        <p>Red, blue, purple, green, cyberpunk, forest, dracula, and more.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🧩</div>
-        <h4>Agents &amp; Skills</h4>
-        <p>Reusable markdown agents and skill packs. Auto-invoked by the LLM.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">📊</div>
-        <h4>Cost Tracking</h4>
-        <p>Token usage and spend tracking per session with /cost.</p>
-      </div>
-    </div>
+<section class="fd v">
+<h2 id="intro">Overview</h2>
+<p><strong>Jarvis</strong> is a <strong>terminal-native AI coding agent</strong> — the Harness Agent that lives in your terminal. Talk to it, and it reads/writes files, runs shell commands, searches code, manages git, controls macOS apps, OCRs images, browses the web, and gets work done right where your code lives.</p>
 
-    <div class="highlights-bar">
-      <div class="h-item"><span class="h-num">01</span>
-        <div><strong>resolve_context</strong><span>One-call codebase scan — gets imports, importers, tests, configs in 1
-            shot</span></div>
-      </div>
-      <div class="h-item"><span class="h-num">02</span>
-        <div><strong>Global MCP · Skills · Agents</strong><span>Export/import from Claude Code, OpenCode, Cursor —
-            single key press</span></div>
-      </div>
-      <div class="h-item"><span class="h-num">03</span>
-        <div><strong>Pinned Prompt</strong><span>Always-on context injected with every prompt — set once, works
-            everywhere</span></div>
-      </div>
-      <div class="h-item"><span class="h-num">04</span>
-        <div><strong>Tool Auto-Repair</strong><span>LLM passes bad params? 14-stage repair pipeline fixes it
-            silently</span></div>
-      </div>
-      <div class="h-item"><span class="h-num">05</span>
-        <div><strong>3 Launch Modes</strong><span><code>jarvis</code> TUI · <code>jarvis --web</code> browser ·
-            <code>jarvis --legacy</code> REPL</span></div>
-      </div>
-      <div class="h-item"><span class="h-num">06</span>
-        <div><strong>No Project Jail</strong><span>Read/write anywhere on your machine — not locked to CWD</span></div>
-      </div>
-    </div>
+<div class="hb">
+  <div class="hi"><span class="hn">01</span><div><st>resolve_context</st><sp>One-call codebase scan — imports, importers, tests, configs in 1 shot</sp></div></div>
+  <div class="hi"><span class="hn">02</span><div><st>Global MCP · Skills · Agents</st><sp>Export/import from Claude Code, OpenCode, Cursor — single key press</sp></div></div>
+  <div class="hi"><span class="hn">03</span><div><st>Pinned Prompt</st><sp>Always-on context injected with every prompt — set once, works everywhere</sp></div></div>
+  <div class="hi"><span class="hn">04</span><div><st>Tool Auto-Repair</st><sp>LLM passes bad params? 14-stage repair pipeline fixes it silently</sp></div></div>
+  <div class="hi"><span class="hn">05</span><div><st>3 Launch Modes</st><sp><code>jarvis</code> TUI · <code>jarvis --web</code> browser · <code>jarvis --legacy</code> REPL</sp></div></div>
+  <div class="hi"><span class="hn">06</span><div><st>No Project Jail</st><sp>Read/write anywhere on your machine — not locked to CWD</sp></div></div>
+</div>
 
-    <style>
-      .highlights-bar {
-        display: flex;
-        flex-direction: column;
-        gap: .6rem;
-        margin: 1.4rem 0 2rem;
-        background: rgba(126, 184, 255, .04);
-        border: 1px solid rgba(126, 184, 255, .1);
-        border-radius: 10px;
-        padding: 1.2rem 1.4rem
-      }
+<div class="fg">
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h4>Interactive TUI</h4><p>Rich Textual-based terminal UI with streaming, panels, and markdown rendering.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h4>Dual Auth</h4><p>API key, OAuth PKCE, OpenRouter, OpenCode Zen — multiple auth paths.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><h4>File Operations</h4><p>Read, write, edit, multi-edit, glob, rank, fast-find — full filesystem access.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div><h4>Shell Access</h4><p>Run any shell command, view output inline — no context switching.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><circle cx="12" cy="12" r="4"/><line x1="1.05" y1="12" x2="7" y2="12"/><line x1="17.01" y1="12" x2="22.96" y2="12"/></svg></div><h4>Git Integration</h4><p>Status, diff, log — all from the chat. Undo/redo with git-backed safety.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><h4>macOS Control</h4><p>Launch apps, click UI, type text, AppleScript, notifications, clipboard, TTS.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h4>Web Access</h4><p>Search, fetch URLs, verified multi-source fact checking.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><path d="M12 2a7 7 0 0 1 7 7c0 2.3-1.1 4.3-2.8 5.6A4 4 0 0 1 14 18H8a4 4 0 0 1-2-7.4A7 7 0 0 1 12 2z"/><path d="M12 18v4"/><path d="M8 22h8"/></svg></div><h4>Persistent Memory</h4><p>Remembers facts about you. Self-learns lessons from past sessions.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><path d="M9 2v6"/><path d="M15 2v6"/><path d="M5 8h14"/><path d="M7 8v5a5 5 0 0 0 10 0V8"/><path d="M12 18v4"/></svg></div><h4>MCP Support</h4><p>Model Context Protocol — connect external tools and data sources.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.5-.7 1.5-1.5 0-.4-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.8.7-1.5 1.5-1.5H16c3.3 0 6-2.7 6-6 0-5.5-4.5-10-10-10z"/></svg></div><h4>15+ Themes</h4><p>Red, blue, purple, green, cyberpunk, forest, dracula, and more.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><path d="M10 13H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M20 13h-6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1z"/><path d="M13 20a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1"/><circle cx="18" cy="18" r="3"/></svg></div><h4>Agents &amp; Skills</h4><p>Reusable markdown agents and skill packs. Auto-invoked by the LLM.</p></div>
+  <div class="fc"><div class="fi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><h4>Cost Tracking</h4><p>Token usage and spend tracking per session with <code>/cost</code>.</p></div>
+</div>
 
-      .h-item {
-        display: flex;
-        align-items: flex-start;
-        gap: .8rem;
-        padding: .45rem 0
-      }
+<p>No web UI, no daemon. Just <code>jarvis</code> in your project folder. Built on <strong>Python 3.10+</strong> with the <strong>Anthropic API</strong> (and OpenRouter, OpenCode, OpenCode Zen, and custom providers).</p>
 
-      .h-item+.h-item {
-        border-top: 1px solid rgba(255, 255, 255, .04)
-      }
+<h3>Quick Reference</h3>
+<div class="cs">
+  <div class="csi"><div class="cc">jarvis</div><div class="cd">Launch TUI in current project</div></div>
+  <div class="csi"><div class="cc">jarvis -p "prompt"</div><div class="cd">Headless one-shot execution</div></div>
+  <div class="csi"><div class="cc">jarvis --web</div><div class="cd">TUI + browser remote control</div></div>
+  <div class="csi"><div class="cc">jarvis --legacy</div><div class="cd">Use Rich REPL instead of TUI</div></div>
+  <div class="csi"><div class="cc">/help</div><div class="cd">List all slash commands</div></div>
+  <div class="csi"><div class="cc">/model</div><div class="cd">Switch AI model</div></div>
+  <div class="csi"><div class="cc">/agent</div><div class="cd">Switch active agent</div></div>
+  <div class="csi"><div class="cc">/mcp</div><div class="cd">Manage MCP servers</div></div>
+  <div class="csi"><div class="cc">/cost</div><div class="cd">View token usage &amp; spend</div></div>
+  <div class="csi"><div class="cc">/undo</div><div class="cd">Undo last action</div></div>
+</div>
+</section>
 
-      .h-num {
-        font-family: 'DM Mono', monospace;
-        font-size: .7rem;
-        font-weight: 600;
-        color: #7eb8ff;
-        background: rgba(126, 184, 255, .1);
-        padding: .1rem .5rem;
-        border-radius: 4px;
-        line-height: 1.6;
-        white-space: nowrap
-      }
+<hr>
 
-      .h-item div strong {
-        display: block;
-        font-size: .88rem;
-        color: #e0e0f0;
-        margin-bottom: .1rem
-      }
-
-      .h-item div span {
-        font-size: .78rem;
-        color: #9a9ab2
-      }
-
-      .h-item div code {
-        font-size: .78rem
-      }
-
-      [data-theme="light"] .highlights-bar {
-        background: rgba(37, 99, 235, .04);
-        border-color: rgba(37, 99, 235, .15)
-      }
-
-      [data-theme="light"] .h-item div strong {
-        color: #1a1a2e
-      }
-
-      [data-theme="light"] .h-item div span {
-        color: #5a5a7a
-      }
-
-      [data-theme="light"] .h-num {
-        background: rgba(37, 99, 235, .1);
-        color: #2563eb
-      }
-    </style>
-    <p>No web UI, no daemon. Just <code>jarvis</code> in your project folder. Built on <strong>Python 3.10+</strong>
-      with the <strong>Anthropic API</strong> (and OpenRouter, OpenCode, OpenCode Zen, and custom providers).</p>
-
-    <hr>
-
-    <!-- ──────────────── INSTALL ──────────────── -->
-    <h2 id="install">Install</h2>
-    <h3>One-command install (recommended)</h3>
-    <pre><code>curl -fsSL https://raw.githubusercontent.com/PrajsRamteke/harness-agent/main/scripts/install | bash
+<section class="fd">
+<h2 id="install">Install</h2>
+<h3>One-command install (recommended)</h3>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/PrajsRamteke/harness-agent/main/scripts/install | bash
 source ~/.zshrc</code></pre>
-    <p>After install, open a new terminal, go to any project, and run <code>jarvis</code>.</p>
+<p>After install, open a new terminal, go to any project, and run <code>jarvis</code>.</p>
+<div class="co w"><strong>Troubleshooting:</strong> If <code>jarvis: command not found</code>, add <code>~/.local/bin</code> to your PATH: <code>export PATH="$HOME/.local/bin:$PATH"</code></div>
 
-    <div class="callout warn">
-      <strong>Troubleshooting:</strong> If <code>jarvis: command not found</code>, add <code>~/.local/bin</code> to your
-      PATH: <code>export PATH="$HOME/.local/bin:$PATH"</code>
-    </div>
-
-    <h3>Development setup</h3>
-    <pre><code>git clone https://github.com/PrajsRamteke/harness-agent.git
+<h3>Development setup</h3>
+<pre><code class="language-bash">git clone https://github.com/PrajsRamteke/harness-agent.git
 cd harness-agent
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 jarvis --help</code></pre>
 
-    <h3>Run the agent</h3>
-    <pre><code>jarvis                     # TUI mode (default)
-java agent.py              # same as jarvis
+<h3>Run the agent</h3>
+<pre><code class="language-bash">jarvis                     # TUI mode (default)
+python agent.py            # same as jarvis
 python agent.py --legacy   # Rich REPL mode</code></pre>
-
-    <hr>
-
-    <!-- ──────────────── AUTH ──────────────── -->
-    <h2 id="auth">Authentication</h2>
-    <p>Jarvis supports multiple authentication methods. On first launch you'll pick one, or set an environment variable
-      to skip the prompt.</p>
-
-    <h3>Methods</h3>
-    <table>
-      <tr>
-        <th>Method</th>
-        <th>Env Variable</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><strong>API Key</strong></td>
-        <td><code>ANTHROPIC_API_KEY</code></td>
-        <td>Direct Anthropic API key (sk-ant-…). The classic approach.</td>
-      </tr>
-      <tr>
-        <td><strong>OAuth via PKCE</strong></td>
-        <td>—</td>
-        <td>Browser-based sign-in with your Anthropic account. Token stored locally.</td>
-      </tr>
-      <tr>
-        <td><strong>OpenRouter</strong></td>
-        <td><code>OPENROUTER_API_KEY</code></td>
-        <td>Route through OpenRouter for multi-model access.</td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode Zen</strong></td>
-        <td><code>OPENCODE_ZEN_API_KEY</code></td>
-        <td>Curated, verified models from the OpenCode team.</td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode Go</strong></td>
-        <td><code>OPENCODE_API_KEY</code></td>
-        <td>Low-cost subscription plan for popular open coding models.</td>
-      </tr>
-      <tr>
-        <td><strong>Harness Agent (free)</strong></td>
-        <td>—</td>
-        <td>Free tier with Bearer public model. Auto-selected on first run.</td>
-      </tr>
-    </table>
-
-    <h3>CLI auth commands</h3>
-    <p>Manage credentials with <code>/login</code> (or <code>/logout</code>) in the TUI. Or use the auth command set:
-    </p>
-    <pre><code># All managed through the TUI — just type /login
-/login      # Sign in with OAuth
-/logout     # Clear stored credentials
-/key        # Enter/replace an API key</code></pre>
-
-    <h3>Provider config</h3>
-    <p>Pin a provider explicitly with the <code>HARNESS_PROVIDER</code> env var: <code>anthropic</code>,
-      <code>openrouter</code>, <code>opencode</code>, or <code>opencode_zen</code>.</p>
-
-    <hr>
-
-    <!-- ──────────────── TUI ──────────────── -->
-    <h2 id="tui">TUI Interface</h2>
-    <p>Jarvis provides an interactive terminal user interface (TUI) built with <strong>Textual</strong>. Running
-      <code>jarvis</code> from your project folder starts the TUI.</p>
-
-    <h3>Layout</h3>
-    <p>The TUI is composed of several panels and zones:</p>
-    <ul>
-      <li><strong>Conversation area</strong> — scrollable chat with markdown-rendered messages, syntax-highlighted code
-        blocks, and collapsible tool outputs.</li>
-      <li><strong>Prompt input</strong> — multi-line text area at the bottom. Type your message and press Enter to send.
-        Use <code>/</code> commands.</li>
-      <li><strong>Status bar</strong> — bottom strip showing project path, active provider, model, agent, token count,
-        and live indicators.</li>
-      <li><strong>Thinking panel</strong> — live view of the model's reasoning process (for models that support extended
-        thinking).</li>
-      <li><strong>Tool viewer</strong> — press <kbd>F3</kbd> to scroll through recent tool outputs.</li>
-    </ul>
-
-    <h3>File references</h3>
-    <p>Reference files in your messages using <code>@</code>. This does a fuzzy file search in the current working
-      directory.</p>
-    <pre><code>How is auth handled in @jarvis/auth/client.py?</code></pre>
-    <p>The content of the file is added to the conversation automatically.</p>
-
-    <h3>Bash commands</h3>
-    <p>Start a message with <code>!</code> to run a shell command. The output is added to the conversation as context.
-    </p>
-    <pre><code>! ls -la</code></pre>
-
-    <h3>Images &amp; attachments</h3>
-    <p>Drag and drop images into the terminal to add them to the prompt. Jarvis uses OCR to read text from images. You
-      can also paste images from the clipboard.</p>
-
-    <hr>
-
-    <!-- ──────────────── CLI ──────────────── -->
-    <h2 id="cli">CLI Reference</h2>
-    <p>The <code>jarvis</code> command-line interface starts the TUI by default but accepts various flags and
-      subcommands for headless and web modes.</p>
-
-    <table>
-      <tr>
-        <th>Flag / Argument</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>jarvis [prompt…]</code></td>
-        <td>Start the TUI and optionally send a prompt immediately</td>
-      </tr>
-      <tr>
-        <td><code>jarvis -p "PROMPT"</code></td>
-        <td>Run one task headlessly (no TUI), auto-approve shell commands, then exit</td>
-      </tr>
-      <tr>
-        <td><code>jarvis --legacy</code></td>
-        <td>Use the older Rich REPL mode instead of the Textual TUI</td>
-      </tr>
-      <tr>
-        <td><code>jarvis --web</code></td>
-        <td>Enable browser remote control (web UI) alongside the TUI</td>
-      </tr>
-      <tr>
-        <td><code>jarvis --web PORT</code></td>
-        <td>Set a custom web UI port (default: 8765)</td>
-      </tr>
-      <tr>
-        <td><code>jarvis --web-port PORT</code></td>
-        <td>Explicit web port (alias)</td>
-      </tr>
-      <tr>
-        <td><code>jarvis --help</code></td>
-        <td>Show CLI help</td>
-      </tr>
-    </table>
-
-    <div class="callout info">
-      <strong>Tip:</strong> Use <code>jarvis "explain this codebase"</code> to send an initial prompt when launching the
-      TUI.
-    </div>
-
-    <hr>
-
-    <!-- ──────────────── SLASH COMMANDS ──────────────── -->
-    <h2 id="slash">Slash Commands</h2>
-    <p>Type <code>/</code> followed by a command name to quickly execute actions inside the TUI.</p>
-
-    <div class="cmd-grid">
-      <div class="cmd-item">
-        <div class="cmd">/help</div>
-        <div class="desc">Show help dialog with all commands</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/clear, /new</div>
-        <div class="desc">Start a new session</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/exit, /quit, /q</div>
-        <div class="desc">Exit Jarvis</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/undo</div>
-        <div class="desc">Undo last message + file changes</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/redo</div>
-        <div class="desc">Redo a previously undone message</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/retry</div>
-        <div class="desc">Retry the last assistant response</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/model</div>
-        <div class="desc">Open model picker</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/provider</div>
-        <div class="desc">Open provider picker</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/session, /sessions</div>
-        <div class="desc">List, switch, manage sessions</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/cost</div>
-        <div class="desc">Show token usage &amp; spend</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/plan [on|off]</div>
-        <div class="desc">Toggle plan mode (read-only)</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/think</div>
-        <div class="desc">Toggle thinking/reasoning display</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/theme</div>
-        <div class="desc">Open theme picker</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/settings</div>
-        <div class="desc">Open settings manager</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/agent</div>
-        <div class="desc">List and switch agents</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/skill, /skills</div>
-        <div class="desc">Browse available skills</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/command</div>
-        <div class="desc">Manage custom commands</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/memory, /memories</div>
-        <div class="desc">View/manage user facts</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/lesson, /lessons</div>
-        <div class="desc">View/manage learned lessons</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/pin</div>
-        <div class="desc">Manage pinned context</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/mcp</div>
-        <div class="desc">Manage MCP servers &amp; tools (press g to toggle global scope)</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/login, /logout</div>
-        <div class="desc">OAuth sign in/out</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/key</div>
-        <div class="desc">Enter/replace API key</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/upgrade</div>
-        <div class="desc">Check for and apply updates</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/export [session]</div>
-        <div class="desc">Export conversation to markdown</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/import</div>
-        <div class="desc">Import conversation from file</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/paste</div>
-        <div class="desc">Open text paste editor</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/multi</div>
-        <div class="desc">Multi-turn edit session</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/scan</div>
-        <div class="desc">Scan project and add context</div>
-      </div>
-      <div class="cmd-item">
-        <div class="cmd">/local</div>
-        <div class="desc">Manage local models</div>
-      </div>
-    </div>
-
-    <hr>
-
-    <!-- ──────────────── WEB REMOTE ──────────────── -->
-    <h2 id="web-remote">Web Remote</h2>
-    <p>Jarvis includes a mobile-friendly web UI for browser-based remote control. Enable it with the <code>--web</code>
-      flag.</p>
-    <pre><code>jarvis --web
-# or with custom port:
-jarvis --web 9090</code></pre>
-
-    <p>Once active, a QR code is shown in the terminal. Scan it with your phone or open the URL in any browser on the
-      same network.</p>
-
-    <h3>Features</h3>
-    <ul>
-      <li><strong>Mobile-friendly</strong> — responsive UI works on phones and tablets</li>
-      <li><strong>Real-time streaming</strong> — see assistant responses as they arrive</li>
-      <li><strong>Session management</strong> — switch sessions, view history</li>
-      <li><strong>File browsing</strong> — view project files</li>
-      <li><strong>Model &amp; provider selection</strong> — change settings on the fly</li>
-      <li><strong>Console multiplexing</strong> — TUI and web share the same session seamlessly</li>
-    </ul>
-
-    <div class="callout warn">
-      <strong>Network:</strong> The web UI binds to <code>0.0.0.0:PORT</code>. For security, avoid exposing it to
-      untrusted networks.
-    </div>
-
-    <hr>
-
-    <!-- ──────────────── TOOLS ──────────────── -->
-    <h2 id="tools">Tool Reference</h2>
-    <p>Jarvis uses a rich set of tools organized into groups. The tool router dynamically selects which tools to expose
-      each turn based on the conversation context.</p>
-
-    <h3>Core tools <span class="tag core">always on</span></h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>read_file</code></td>
-        <td>Read a file (with offset/limit support)</td>
-      </tr>
-      <tr>
-        <td><code>write_file</code></td>
-        <td>Create or overwrite a file</td>
-      </tr>
-      <tr>
-        <td><code>edit_file</code></td>
-        <td>Surgical search-replace on one file</td>
-      </tr>
-      <tr>
-        <td><code>multi_edit</code></td>
-        <td>Apply 2-30 search-replace edits across files in one call</td>
-      </tr>
-      <tr>
-        <td><code>read_document</code></td>
-        <td>Read PDFs, spreadsheets, images, JSON, CSV, etc.</td>
-      </tr>
-      <tr>
-        <td><code>list_dir</code></td>
-        <td>List directory contents with full paths</td>
-      </tr>
-      <tr>
-        <td><code>glob_files</code></td>
-        <td>Find files by glob pattern</td>
-      </tr>
-      <tr>
-        <td><code>rank_files</code></td>
-        <td>Rank files by relevance to a query</td>
-      </tr>
-      <tr>
-        <td><code>fast_find</code></td>
-        <td>Spotlight-indexed file search (milliseconds)</td>
-      </tr>
-      <tr>
-        <td><code>run_bash</code></td>
-        <td>Execute any shell command</td>
-      </tr>
-      <tr>
-        <td><code>search_code</code></td>
-        <td>Regex search with ripgrep (skips node_modules, .git, builds)</td>
-      </tr>
-      <tr>
-        <td><code>git_status</code></td>
-        <td>git status</td>
-      </tr>
-      <tr>
-        <td><code>git_diff</code></td>
-        <td>git diff with staged/unstaged support</td>
-      </tr>
-      <tr>
-        <td><code>git_log</code></td>
-        <td>git log</td>
-      </tr>
-    </table>
-
-    <h3>Context tools <span class="tag core">always on</span></h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>resolve_context</code></td>
-        <td>One-call codebase understanding: gets all related files (target + imports + importers + tests + types +
-          configs)</td>
-      </tr>
-      <tr>
-        <td><code>read_bundle</code></td>
-        <td>Batch-read 2-20 known paths with parallel I/O, budget-aware output capping</td>
-      </tr>
-    </table>
-
-    <h3>macOS tools <span class="tag mac">macOS only</span></h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>launch_app</code></td>
-        <td>Launch an application by name</td>
-      </tr>
-      <tr>
-        <td><code>focus_app</code></td>
-        <td>Bring an app to the foreground</td>
-      </tr>
-      <tr>
-        <td><code>quit_app</code></td>
-        <td>Quit an application</td>
-      </tr>
-      <tr>
-        <td><code>list_apps</code></td>
-        <td>List running applications</td>
-      </tr>
-      <tr>
-        <td><code>frontmost_app</code></td>
-        <td>Get the frontmost application</td>
-      </tr>
-      <tr>
-        <td><code>applescript</code></td>
-        <td>Execute AppleScript (Messages, Mail, Safari, Music, Finder, Notes, etc.)</td>
-      </tr>
-      <tr>
-        <td><code>read_ui</code></td>
-        <td>Read the accessibility tree of the frontmost window</td>
-      </tr>
-      <tr>
-        <td><code>click_element</code></td>
-        <td>Click a UI element by label, role, or id</td>
-      </tr>
-      <tr>
-        <td><code>type_text</code></td>
-        <td>Type text at the current focus</td>
-      </tr>
-      <tr>
-        <td><code>key_press</code></td>
-        <td>Send keyboard shortcuts</td>
-      </tr>
-      <tr>
-        <td><code>click_menu</code></td>
-        <td>Click a menu bar item</td>
-      </tr>
-      <tr>
-        <td><code>click_at</code></td>
-        <td>Click at an (x, y) coordinate</td>
-      </tr>
-      <tr>
-        <td><code>wait</code></td>
-        <td>Pause for a duration</td>
-      </tr>
-      <tr>
-        <td><code>check_permissions</code></td>
-        <td>Check macOS accessibility permissions</td>
-      </tr>
-      <tr>
-        <td><code>clipboard_get</code></td>
-        <td>Read clipboard content</td>
-      </tr>
-      <tr>
-        <td><code>clipboard_set</code></td>
-        <td>Write to clipboard</td>
-      </tr>
-      <tr>
-        <td><code>open_url</code></td>
-        <td>Open a URL in the default browser</td>
-      </tr>
-      <tr>
-        <td><code>notify</code></td>
-        <td>Send a desktop notification</td>
-      </tr>
-      <tr>
-        <td><code>speck</code></td>
-        <td>Text-to-speech (short, natural phrasing)</td>
-      </tr>
-      <tr>
-        <td><code>shortcut_run</code></td>
-        <td>Run a macOS Shortcut</td>
-      </tr>
-      <tr>
-        <td><code>mac_control</code></td>
-        <td>General macOS control operations</td>
-      </tr>
-    </table>
-
-    <h3>Internet tools</h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>web_search</code></td>
-        <td>Quick web search via DuckDuckGo</td>
-      </tr>
-      <tr>
-        <td><code>fetch_url</code></td>
-        <td>Fetch URL content (HTML stripped or raw)</td>
-      </tr>
-      <tr>
-        <td><code>verified_search</code></td>
-        <td>Multi-source verified research — cross-checks 5-10 sources for factual answers</td>
-      </tr>
-    </table>
-
-    <h3>OCR tools</h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>read_image_text</code></td>
-        <td>Extract text from a single image</td>
-      </tr>
-      <tr>
-        <td><code>read_images_text</code></td>
-        <td>Batch OCR — multiple images concurrently</td>
-      </tr>
-    </table>
-
-    <h3>Cognitive tools</h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>ask_user_question</code></td>
-        <td>Structured multiple-choice prompt for user input. Shows options above the status bar</td>
-      </tr>
-      <tr>
-        <td><code>memory_save</code></td>
-        <td>Persist a fact about the user</td>
-      </tr>
-      <tr>
-        <td><code>memory_list</code></td>
-        <td>List all stored facts</td>
-      </tr>
-      <tr>
-        <td><code>memory_delete</code></td>
-        <td>Delete a stored fact</td>
-      </tr>
-      <tr>
-        <td><code>lesson_save</code></td>
-        <td>Save a learned lesson (pattern → solution)</td>
-      </tr>
-      <tr>
-        <td><code>lesson_search</code></td>
-        <td>Search past lessons by topic</td>
-      </tr>
-      <tr>
-        <td><code>lesson_list</code></td>
-        <td>List all lessons</td>
-      </tr>
-      <tr>
-        <td><code>lesson_delete</code></td>
-        <td>Delete a lesson</td>
-      </tr>
-      <tr>
-        <td><code>skill_list</code></td>
-        <td>List available SKILL.md packs</td>
-      </tr>
-      <tr>
-        <td><code>skill_load</code></td>
-        <td>Load a skill for context-appropriate instructions</td>
-      </tr>
-      <tr>
-        <td><code>exit_plan_mode</code></td>
-        <td>Exit plan mode when user approves a plan</td>
-      </tr>
-    </table>
-
-    <hr>
-
-    <!-- ──────────────── CONTEXT TOOLS ──────────────── -->
-    <h2 id="context-tools">Context Tools</h2>
-    <p>Jarvis's <strong>connected context pack</strong> replaces 5-20 separate file reads with a single call. These are
-      the agent's superpower for codebase understanding.</p>
-
-    <h3>resolve_context</h3>
-    <p>Give it a task description and get <strong>all related files</strong> at once — targets, imports, importers,
-      tests, types, and configs. The repo graph builds automatically.</p>
-    <pre><code>resolve_context(task="Fix login bug in JWT token refresh")
-# Returns: jwt.py, auth.py, middleware.py, test_auth.py, types.py, config.py — all in one shot</code></pre>
-
-    <h3>read_bundle</h3>
-    <p>Batch-read 2-20 specific paths with parallel I/O. Budget-aware: splits the output cap across files and returns as
-      much as fits.</p>
-    <pre><code>read_bundle(["src/auth.py", "src/middleware.py", "src/types.py"])
-# Returns: all three files with content, no wasted round-trips</code></pre>
-
-    <h3>Savings</h3>
-    <p>Without context tools: 10+ read_file calls, ~5-10 seconds, ~50K tokens overhead. With context tools: 1-2 calls,
-      ~1 second, minimal overhead.</p>
-
-    <hr>
-
-    <!-- ──────────────── TOOL REPAIR ──────────────── -->
-    <h2 id="tool-repair">Tool Repair</h2>
-    <p>Jarvis automatically validates and repairs model-generated tool inputs. When the model sends malformed arguments,
-      the repair layer fixes them <strong>before execution</strong> — so you don't see errors.</p>
-
-    <h3>Repair pipeline (14 stages)</h3>
-    <ol>
-      <li><strong>Parse stringified args</strong> — whole input sent as a JSON string → dict</li>
-      <li><strong>Unwrap envelopes</strong> — <code>{"arguments": {...}}</code> → inner dict</li>
-      <li><strong>Fix field aliases</strong> — <code>file_path</code> → <code>path</code>, <code>old</code> →
-        <code>old_str</code></li>
-      <li><strong>Strip null values</strong> — remove null from optional fields</li>
-      <li><strong>Strip extra fields</strong> — remove fields not in the schema</li>
-      <li><strong>Parse stringified arrays</strong> — <code>"['a','b']"</code> → <code>["a", "b"]</code></li>
-      <li><strong>Parse stringified objects</strong> — <code>"{...}"</code> → <code>{...}</code></li>
-      <li><strong>Fix wrong containers</strong> — unwrap <code>[{...}]</code> → <code>{...}</code></li>
-      <li><strong>Clean paths</strong> — <code>["path"]</code> → <code>"path"</code></li>
-      <li><strong>Fix string numbers</strong> — <code>"10"</code> → <code>10</code></li>
-      <li><strong>Fix boolean strings</strong> — <code>"true"</code> → <code>True</code></li>
-      <li><strong>Coerce to string</strong> — list of lines joined, dict serialized</li>
-      <li><strong>Fix markdown paths</strong> — <code>[file.md](...)</code> → <code>file.md</code></li>
-      <li><strong>Repair nested arrays</strong> — fix each item of <code>multi_edit.edits</code>,
-        <code>ask_user_question.questions</code></li>
-    </ol>
-    <p>Each fixer is idempotent — correct inputs pass through with zero changes. The UI shows a small <strong>⚒</strong>
-      indicator when repairs were applied.</p>
-
-    <hr>
-
-    <!-- ──────────────── PLAN MODE ──────────────── -->
-    <h2 id="plan-mode">Plan Mode</h2>
-    <p>Plan mode restricts Jarvis to <strong>read-only operations</strong>. It can analyze, suggest, and explain — but
-      cannot write files, run shell commands, or make changes. Use it when you want a plan before execution.</p>
-
-    <pre><code>/plan on          # Enter plan mode
-/plan off         # Exit plan mode</code></pre>
-
-    <p>In plan mode, only these tools are available:</p>
-    <ul>
-      <li>File reading (<code>read_file</code>, <code>read_bundle</code>, <code>read_document</code>)</li>
-      <li>Search &amp; listing (<code>search_code</code>, <code>glob_files</code>, <code>rank_files</code>,
-        <code>list_dir</code>, <code>fast_find</code>)</li>
-      <li>Context tools (<code>resolve_context</code>)</li>
-      <li>Git (<code>git_status</code>, <code>git_diff</code>, <code>git_log</code>)</li>
-      <li>Internet &amp; web</li>
-      <li><code>ask_user_question</code></li>
-      <li><code>exit_plan_mode</code> — used when you approve the plan to automatically switch back to build mode</li>
-    </ul>
-
-    <div class="callout info">
-      <strong>Tip:</strong> Describe what you want built. The agent will analyze the codebase, explain its approach, and
-      wait for your approval before making changes.
-    </div>
-
-    <hr>
-
-    <!-- ──────────────── CONFIG ──────────────── -->
-    <h2 id="config">Configuration</h2>
-    <p>Jarvis uses a unified <code>~/.config/harness-agent/settings.json</code> file for all preferences. Per-project
-      overrides go in <code>.harness/settings.json</code> in your project root.</p>
-
-    <h3>Global settings</h3>
-    <pre><code>{
-  "model": "sonnet-4-6",
-  "theme": "red",
-  "think": {
-    "mode": true,
-    "effort": "medium"
-  },
-  "skills": { "global": false },
-  "mcp":    { "global": false },
-  "trace":  { "on": true }
-}</code></pre>
-
-    <h3>Per-project config</h3>
-    <p>Place a <code>.harness/settings.json</code> in your project root. These settings merge with (and override) the
-      global config:</p>
-    <pre><code>// .harness/settings.json
-{
-  "model": "claude-sonnet-4-20250514",
-  "theme": "cyberpunk",
-  "skills": { "global": true }
-}</code></pre>
-
-    <h3>Using the settings modal</h3>
-    <p>Type <code>/settings</code> in the TUI to open the settings manager. Browse and toggle all options without
-      editing files by hand.</p>
-
-    <hr>
-
-    <!-- ──────────────── ENV VARS ──────────────── -->
-    <h2 id="env">Environment Variables</h2>
-    <p>Jarvis respects the following environment variables for configuration:</p>
-
-    <table>
-      <tr>
-        <th>Variable</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><code>ANTHROPIC_API_KEY</code></td>
-        <td>—</td>
-        <td>Skip auth prompt, use this Anthropic key</td>
-      </tr>
-      <tr>
-        <td><code>OPENROUTER_API_KEY</code></td>
-        <td>—</td>
-        <td>OpenRouter key</td>
-      </tr>
-      <tr>
-        <td><code>OPENCODE_API_KEY</code></td>
-        <td>—</td>
-        <td>OpenCode Go key</td>
-      </tr>
-      <tr>
-        <td><code>OPENCODE_ZEN_API_KEY</code></td>
-        <td>—</td>
-        <td>OpenCode Zen key</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_PROVIDER</code></td>
-        <td>—</td>
-        <td>Pin provider: <code>anthropic</code>, <code>openrouter</code>, <code>opencode</code>,
-          <code>opencode_zen</code></td>
-      </tr>
-      <tr>
-        <td><code>CLAUDE_MODEL</code></td>
-        <td><code>sonnet-4-6</code></td>
-        <td>Override default model ID</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_MAX_PARALLEL_TOOLS</code></td>
-        <td><code>64</code></td>
-        <td>Max concurrent tool workers</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_BUNDLE_MAX_CHARS</code></td>
-        <td><code>120000</code></td>
-        <td>Max chars in resolve_context/read_bundle output</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_BUNDLE_PER_FILE_MAX</code></td>
-        <td><code>20000</code></td>
-        <td>Per-file cap inside a bundle</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_BUNDLE_MODE</code></td>
-        <td><code>skeleton</code></td>
-        <td>Default for resolve_context: full | skeleton | manifest</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_BUNDLE_MODE_READ</code></td>
-        <td><code>full</code></td>
-        <td>Default for read_bundle</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_HTTP_READ_TIMEOUT</code></td>
-        <td><code>240/600</code></td>
-        <td>Streaming response timeout (OpenRouter/direct)</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_HTTP_CONNECT_TIMEOUT</code></td>
-        <td><code>30</code></td>
-        <td>Connection timeout in seconds</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_STREAM_REPLY</code></td>
-        <td><code>1</code></td>
-        <td>Set to <code>0</code> to disable live streaming</td>
-      </tr>
-      <tr>
-        <td><code>HARNESS_WEB_PORT</code></td>
-        <td><code>8765</code></td>
-        <td>Web remote port</td>
-      </tr>
-    </table>
-
-    <hr>
-
-    <!-- ──────────────── THEMES ──────────────── -->
-    <h2 id="themes">Themes</h2>
-    <p>Jarvis ships with <strong>15 built-in color themes</strong>. Switch between them with <code>/theme</code> or edit
-      <code>settings.json</code>.</p>
-
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="icon">🔴</div>
-        <h4>Red</h4>
-        <p>Classic warm-toned default. Green user, pink assistant, amber tools.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🔵</div>
-        <h4>Blue</h4>
-        <p>Cool blue assistant, green user. Clean and professional.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🟣</div>
-        <h4>Purple</h4>
-        <p>Purple assistant border. Bold and distinctive.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🟢</div>
-        <h4>Green</h4>
-        <p>Full green scheme. Easy on the eyes.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🟠</div>
-        <h4>Orange</h4>
-        <p>Warm orange tones. Friendly and energetic.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🟡</div>
-        <h4>Yellow</h4>
-        <p>Golden yellow accents. Bright and cheerful.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🌹</div>
-        <h4>Rose</h4>
-        <p>Pink hues. Soft and elegant.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🪨</div>
-        <h4>Slate</h4>
-        <p>Grayscale-neutral. Minimal and focused.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🌊</div>
-        <h4>Ocean</h4>
-        <p>Blue-green deep tones. Calm and aquatic.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">⚡</div>
-        <h4>Cyberpunk</h4>
-        <p>Neon accents on dark. Futuristic and vibrant.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">⬜</div>
-        <h4>Monochrome</h4>
-        <p>Pure grayscale. Maximum contrast.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🌲</div>
-        <h4>Forest</h4>
-        <p>Earthy greens. Natural and grounding.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🧛</div>
-        <h4>Dracula</h4>
-        <p>Classic Dracula palette. Rich and moody.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🌅</div>
-        <h4>Sunset</h4>
-        <p>Warm dusk colors. Vibrant gradients.</p>
-      </div>
-      <div class="feature-card">
-        <div class="icon">🌑</div>
-        <h4>Dark</h4>
-        <p>Deep dark mode. Maximum battery savings.</p>
-      </div>
-    </div>
-
-    <h3>Theme persistence</h3>
-    <p>Your selected theme is saved to <code>settings.json</code> under the <code>"theme"</code> key and restored on
-      next launch.</p>
-
-    <hr>
-
-    <!-- ──────────────── SHORTCUTS ──────────────── -->
-    <h2 id="shortcuts">Keyboard Shortcuts</h2>
-    <p>The TUI supports these keyboard shortcuts for rapid interaction.</p>
-
-    <table>
-      <tr>
-        <th>Key</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td><kbd>F1</kbd></td>
-        <td>Keyboard shortcuts help</td>
-      </tr>
-      <tr>
-        <td><kbd>F3</kbd></td>
-        <td>Open tool output viewer (scrollable history)</td>
-      </tr>
-      <tr>
-        <td><kbd>Esc</kbd></td>
-        <td>Cancel current processing</td>
-      </tr>
-      <tr>
-        <td><kbd>Tab</kbd></td>
-        <td>Cycle through discovered agents</td>
-      </tr>
-      <tr>
-        <td><kbd>↑</kbd>/<kbd>↓</kbd></td>
-        <td>Navigate options in ask bar</td>
-      </tr>
-      <tr>
-        <td><kbd>Enter</kbd></td>
-        <td>Confirm selection / send message</td>
-      </tr>
-      <tr>
-        <td><kbd>Space</kbd></td>
-        <td>Toggle multiple selection</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>n</kbd></td>
-        <td>New session</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>c</kbd></td>
-        <td>Compact/summarize session</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>u</kbd></td>
-        <td>Undo last message</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>r</kbd></td>
-        <td>Redo last undo</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>l</kbd></td>
-        <td>List sessions</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>m</kbd></td>
-        <td>Models picker</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>t</kbd></td>
-        <td>Themes picker</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>q</kbd></td>
-        <td>Quit</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>e</kbd></td>
-        <td>Open external editor</td>
-      </tr>
-      <tr>
-        <td><kbd>Ctrl+X</kbd> <kbd>x</kbd></td>
-        <td>Export session to markdown</td>
-      </tr>
-    </table>
-
-    <div class="callout info">
-      <strong>Tip:</strong> <kbd>Ctrl+X</kbd> is the default leader key. Most slash commands have an equivalent keybind.
-    </div>
-
-    <hr>
-
-    <!-- ──────────────── PROVIDERS ──────────────── -->
-    <h2 id="providers">Providers</h2>
-    <p>Jarvis supports multiple LLM providers. Switch between them at runtime with <code>/provider</code>.</p>
-
-    <table>
-      <tr>
-        <th>Provider</th>
-        <th>Config Key</th>
-        <th>Auth Method</th>
-      </tr>
-      <tr>
-        <td><strong>Anthropic</strong></td>
-        <td><code>anthropic</code></td>
-        <td>API key (sk-ant-…) or OAuth PKCE</td>
-      </tr>
-      <tr>
-        <td><strong>OpenRouter</strong></td>
-        <td><code>openrouter</code></td>
-        <td>API key, 200+ models</td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode Zen</strong></td>
-        <td><code>opencode_zen</code></td>
-        <td>Curated verified models</td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode Go</strong></td>
-        <td><code>opencode</code></td>
-        <td>Low-cost subscription</td>
-      </tr>
-      <tr>
-        <td><strong>Harness Agent (free)</strong></td>
-        <td><code>harness_agent</code></td>
-        <td>Free Bearer public model</td>
-      </tr>
-    </table>
-
-    <h3>Default model</h3>
-    <p>Jarvis defaults to <strong>Sonnet 4-6</strong> (Anthropic's Claude Sonnet 4). Override with
-      <code>CLAUDE_MODEL</code> env var or <code>/model</code> at runtime.</p>
-
-    <hr>
-
-    <!-- ──────────────── AGENTS ──────────────── -->
-    <h2 id="agents">Agents</h2>
-    <p>Agents are <strong>reusable markdown files</strong> with YAML frontmatter that add a system-prompt addon when
-      activated. They replace the legacy mode system and let you define specialized personas.</p>
-
-    <h3>Creating an agent</h3>
-    <pre><code># .harness/agents/reviewer.md
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="auth">Authentication</h2>
+<p>Jarvis supports multiple authentication methods. On first launch you'll pick one, or set an env variable to skip the prompt.</p>
+<h3>Methods</h3>
+<div class="tw"><table>
+<tr><th>Method</th><th>Env Variable</th><th>Description</th></tr>
+<tr><td><strong>API Key</strong></td><td><code>ANTHROPIC_API_KEY</code></td><td>Direct Anthropic API key (sk-ant-…)</td></tr>
+<tr><td><strong>OAuth via PKCE</strong></td><td>—</td><td>Browser-based sign-in with your Anthropic account</td></tr>
+<tr><td><strong>OpenRouter</strong></td><td><code>OPENROUTER_API_KEY</code></td><td>Route through OpenRouter for multi-model access</td></tr>
+<tr><td><strong>OpenCode Zen</strong></td><td><code>OPENCODE_ZEN_API_KEY</code></td><td>Curated, verified models from the OpenCode team</td></tr>
+<tr><td><strong>OpenCode Go</strong></td><td><code>OPENCODE_API_KEY</code></td><td>Low-cost subscription plan for popular open coding models</td></tr>
+<tr><td><strong>Harness Agent</strong></td><td>—</td><td>Free tier with Bearer public model</td></tr>
+</table></div>
+<p>Pin a provider with <code>HARNESS_PROVIDER</code>: <code>anthropic</code>, <code>openrouter</code>, <code>opencode</code>, or <code>opencode_zen</code>.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="tui">TUI Interface</h2>
+<p>The interactive TUI is built with <strong>Textual</strong>. Run <code>jarvis</code> from your project folder to start it.</p>
+<ul>
+  <li><strong>Conversation area</strong> — scrollable chat with markdown rendering, syntax-highlighted code</li>
+  <li><strong>Prompt input</strong> — multi-line text area. Type and press <kbd>Enter</kbd> to send</li>
+  <li><strong>Status bar</strong> — project path, provider, model, agent, token count</li>
+  <li><strong>Thinking panel</strong> — live view of the model's reasoning process</li>
+  <li><strong>Tool viewer</strong> — press <kbd>F3</kbd> to scroll through recent tool outputs</li>
+</ul>
+<p>Reference files with <code>@</code>, run bash with <code>!</code>, drag-and-drop images for OCR.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="cli">CLI Reference</h2>
+<div class="tw"><table>
+<tr><th>Flag</th><th>Description</th></tr>
+<tr><td><code>jarvis [prompt…]</code></td><td>Start TUI, optionally send a prompt immediately</td></tr>
+<tr><td><code>jarvis -p "PROMPT"</code></td><td>Headless one-shot task (auto-approve shell), then exit</td></tr>
+<tr><td><code>jarvis --legacy</code></td><td>Use Rich REPL instead of Textual TUI</td></tr>
+<tr><td><code>jarvis --web</code></td><td>Enable browser remote control alongside the TUI</td></tr>
+<tr><td><code>jarvis --web PORT</code></td><td>Set custom web UI port (default: 8765)</td></tr>
+</table></div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="slash">Slash Commands</h2>
+<div class="cg">
+  <div class="ci"><div class="cm">/help</div><div class="cd">Show help dialog</div></div>
+  <div class="ci"><div class="cm">/clear, /new</div><div class="cd">Start a new session</div></div>
+  <div class="ci"><div class="cm">/undo</div><div class="cd">Undo last message + file changes</div></div>
+  <div class="ci"><div class="cm">/redo</div><div class="cd">Redo previously undone</div></div>
+  <div class="ci"><div class="cm">/retry</div><div class="cd">Retry last assistant response</div></div>
+  <div class="ci"><div class="cm">/model</div><div class="cd">Open model picker</div></div>
+  <div class="ci"><div class="cm">/provider</div><div class="cd">Open provider picker</div></div>
+  <div class="ci"><div class="cm">/session</div><div class="cd">List, switch, manage sessions</div></div>
+  <div class="ci"><div class="cm">/cost</div><div class="cd">Show token usage &amp; spend</div></div>
+  <div class="ci"><div class="cm">/plan</div><div class="cd">Toggle plan mode (read-only)</div></div>
+  <div class="ci"><div class="cm">/think</div><div class="cd">Toggle thinking display</div></div>
+  <div class="ci"><div class="cm">/theme</div><div class="cd">Open theme picker</div></div>
+  <div class="ci"><div class="cm">/settings</div><div class="cd">Open settings manager</div></div>
+  <div class="ci"><div class="cm">/agent</div><div class="cd">List and switch agents</div></div>
+  <div class="ci"><div class="cm">/skill</div><div class="cd">Browse available skills</div></div>
+  <div class="ci"><div class="cm">/command</div><div class="cd">Manage custom commands</div></div>
+  <div class="ci"><div class="cm">/memory</div><div class="cd">View/manage user facts</div></div>
+  <div class="ci"><div class="cm">/lesson</div><div class="cd">View/manage learned lessons</div></div>
+  <div class="ci"><div class="cm">/pin</div><div class="cd">Manage pinned context</div></div>
+  <div class="ci"><div class="cm">/mcp</div><div class="cd">Manage MCP servers (press <kbd>g</kbd> for global)</div></div>
+  <div class="ci"><div class="cm">/login</div><div class="cd">OAuth sign in</div></div>
+  <div class="ci"><div class="cm">/key</div><div class="cd">Enter/replace API key</div></div>
+  <div class="ci"><div class="cm">/upgrade</div><div class="cd">Check for updates</div></div>
+  <div class="ci"><div class="cm">/export</div><div class="cd">Export conversation to markdown</div></div>
+</div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="web-remote">Web Remote</h2>
+<p>Enable the mobile-friendly browser UI with <code>jarvis --web</code>.</p>
+<pre><code class="language-bash">jarvis --web        # default port 8765
+jarvis --web 9090   # custom port</code></pre>
+<p>A QR code is shown in the terminal. Scan it with your phone or open the URL in any browser on the same network.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="tools">Tool Reference</h2>
+<p>Tools are organized into groups. The <strong>tool router</strong> dynamically selects which to expose each turn.</p>
+<h3>Core tools <span class="tg c">always on</span></h3>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Description</th></tr>
+<tr><td><code>read_file</code></td><td>Read a file with offset/limit support</td></tr>
+<tr><td><code>write_file</code></td><td>Create or overwrite a file</td></tr>
+<tr><td><code>edit_file</code></td><td>Surgical search-replace on one file</td></tr>
+<tr><td><code>multi_edit</code></td><td>2-30 search-replace edits across files in one call</td></tr>
+<tr><td><code>read_document</code></td><td>Read PDFs, spreadsheets, images, JSON, CSV</td></tr>
+<tr><td><code>list_dir</code></td><td>List directory contents</td></tr>
+<tr><td><code>glob_files</code></td><td>Find files by glob pattern</td></tr>
+<tr><td><code>rank_files</code></td><td>Rank files by relevance</td></tr>
+<tr><td><code>fast_find</code></td><td>Spotlight search (milliseconds)</td></tr>
+<tr><td><code>run_bash</code></td><td>Execute any shell command</td></tr>
+<tr><td><code>search_code</code></td><td>Regex search with ripgrep</td></tr>
+<tr><td><code>git_status / diff / log</code></td><td>Git operations</td></tr>
+</table></div>
+
+<h3>Context tools <span class="tg c">always on</span></h3>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Description</th></tr>
+<tr><td><code>resolve_context</code></td><td>One-call codebase understanding — gets all related files</td></tr>
+<tr><td><code>read_bundle</code></td><td>Batch-read 2-20 known paths with parallel I/O</td></tr>
+</table></div>
+
+<h3>macOS tools <span class="tg m">macOS only</span></h3>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Description</th></tr>
+<tr><td><code>launch / focus / quit_app</code></td><td>Application lifecycle</td></tr>
+<tr><td><code>applescript</code></td><td>Execute AppleScript</td></tr>
+<tr><td><code>read_ui</code></td><td>Read accessibility tree</td></tr>
+<tr><td><code>click_element</code></td><td>Click a UI element</td></tr>
+<tr><td><code>type_text / key_press</code></td><td>Keyboard input</td></tr>
+<tr><td><code>clipboard_get / set</code></td><td>Clipboard operations</td></tr>
+<tr><td><code>notify / speck</code></td><td>Notifications &amp; TTS</td></tr>
+<tr><td><code>shortcut_run</code></td><td>Run a macOS Shortcut</td></tr>
+</table></div>
+
+<h3>Internet &amp; Cognitive</h3>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Description</th></tr>
+<tr><td><code>web_search / fetch_url</code></td><td>Web browsing</td></tr>
+<tr><td><code>verified_search</code></td><td>Multi-source verified research</td></tr>
+<tr><td><code>read_image_text</code></td><td>OCR single image</td></tr>
+<tr><td><code>read_images_text</code></td><td>Batch OCR</td></tr>
+<tr><td><code>ask_user_question</code></td><td>Multiple-choice prompt</td></tr>
+<tr><td><code>memory_save / list / delete</code></td><td>Persistent facts</td></tr>
+<tr><td><code>lesson_save / search / list / delete</code></td><td>Self-learning</td></tr>
+<tr><td><code>skill_list / load</code></td><td>SKILL.md packs</td></tr>
+</table></div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="context-tools">Context Tools</h2>
+<p>The <strong>connected context pack</strong> replaces 5-20 separate file reads with a single call.</p>
+
+<h3>resolve_context</h3>
+<p>Give it a task description and get all related files — targets, imports, importers, tests, types, configs.</p>
+<pre><code class="language-text">resolve_context(task="Fix login bug in JWT token refresh")
+# Returns: jwt.py, auth.py, middleware.py, test_auth.py,
+#          types.py, config.py — all in one shot</code></pre>
+
+<h3>read_bundle</h3>
+<p>Batch-read 2-20 paths with parallel I/O and budget-aware output capping.</p>
+<pre><code class="language-text">read_bundle(["src/auth.py", "src/middleware.py", "src/types.py"])</code></pre>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="tool-repair">Tool Repair</h2>
+<p><strong>14-stage auto-repair pipeline</strong> validates and fixes model-generated tool inputs before execution.</p>
+<ol>
+  <li>Parse stringified args</li><li>Unwrap envelopes</li><li>Fix field aliases</li>
+  <li>Strip null values</li><li>Strip extra fields</li><li>Parse stringified arrays</li>
+  <li>Parse stringified objects</li><li>Fix wrong containers</li><li>Clean paths</li>
+  <li>Fix string numbers</li><li>Fix boolean strings</li><li>Coerce to string</li>
+  <li>Fix markdown paths</li><li>Repair nested arrays</li>
+</ol>
+<p>Each fixer is idempotent — correct inputs pass through unchanged. The UI shows a <strong>⚒</strong> indicator when repairs were applied.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="plan-mode">Plan Mode</h2>
+<p>Restricts Jarvis to <strong>read-only operations</strong>. Analyze, suggest, explain — but no writes, no shell.</p>
+<pre><code class="language-bash">/plan on    # Enter plan mode
+/plan off   # Exit plan mode</code></pre>
+<p>Available: <code>read_file</code>, <code>resolve_context</code>, <code>search_code</code>, <code>glob_files</code>, <code>git_*</code>, web tools, <code>ask_user_question</code>.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="config">Configuration</h2>
+<p>Global: <code>~/.config/harness-agent/settings.json</code>. Per-project: <code>.harness/settings.json</code>.</p>
+<pre><code class="language-json">{"model": "sonnet-4-6", "theme": "red",
+ "think": {"mode": true, "effort": "medium"},
+ "skills": {"global": false}, "mcp": {"global": false}}</code></pre>
+<p>Type <code>/settings</code> in the TUI to edit without touching files.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="env">Environment Variables</h2>
+<div class="tw"><table>
+<tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>ANTHROPIC_API_KEY</code></td><td>—</td><td>Skip auth prompt</td></tr>
+<tr><td><code>OPENROUTER_API_KEY</code></td><td>—</td><td>OpenRouter key</td></tr>
+<tr><td><code>HARNESS_PROVIDER</code></td><td>—</td><td>Pin provider</td></tr>
+<tr><td><code>CLAUDE_MODEL</code></td><td>sonnet-4-6</td><td>Override default model</td></tr>
+<tr><td><code>HARNESS_MAX_PARALLEL_TOOLS</code></td><td>64</td><td>Max concurrent tool workers</td></tr>
+<tr><td><code>HARNESS_BUNDLE_MAX_CHARS</code></td><td>120000</td><td>Max chars in bundle output</td></tr>
+<tr><td><code>HARNESS_STREAM_REPLY</code></td><td>1</td><td>Disable live streaming</td></tr>
+<tr><td><code>HARNESS_WEB_PORT</code></td><td>8765</td><td>Web remote port</td></tr>
+</table></div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="themes">Themes</h2>
+<p><strong>15 built-in color themes</strong>. Switch with <code>/theme</code> or edit <code>settings.json</code>.</p>
+<div class="gal">
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#f97583"></sp><sp style="background:#d29922"></sp></div><div class="tn">Red</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#56d4dd"></sp><sp style="background:#d29922"></sp></div><div class="tn">Blue</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#a371f7"></sp><sp style="background:#d29922"></sp></div><div class="tn">Purple</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#7ee787"></sp><sp style="background:#d29922"></sp></div><div class="tn">Green</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#ffa657"></sp><sp style="background:#d29922"></sp></div><div class="tn">Orange</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#d29922"></sp><sp style="background:#d29922"></sp></div><div class="tn">Yellow</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#ff7b72"></sp><sp style="background:#d29922"></sp></div><div class="tn">Rose</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#8b949e"></sp><sp style="background:#d29922"></sp></div><div class="tn">Slate</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#58a6ff"></sp><sp style="background:#d29922"></sp></div><div class="tn">Ocean</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#bc8cff"></sp><sp style="background:#ff7b72"></sp></div><div class="tn">Cyberpunk</div></div>
+<div class="tc"><div class="sw" style="background:#fff"><sp style="background:#333"></sp><sp style="background:#666"></sp><sp style="background:#999"></sp></div><div class="tn">Monochrome</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#238636"></sp><sp style="background:#d29922"></sp></div><div class="tn">Forest</div></div>
+<div class="tc"><div class="sw" style="background:#282a36"><sp style="background:#50fa7b"></sp><sp style="background:#ff79c6"></sp><sp style="background:#f1fa8c"></sp></div><div class="tn">Dracula</div></div>
+<div class="tc"><div class="sw" style="background:#0d1117"><sp style="background:#3fb950"></sp><sp style="background:#ff7b72"></sp><sp style="background:#e3b341"></sp></div><div class="tn">Sunset</div></div>
+<div class="tc"><div class="sw" style="background:#000"><sp style="background:#333"></sp><sp style="background:#555"></sp><sp style="background:#777"></sp></div><div class="tn">Dark</div></div>
+</div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="shortcuts">Keyboard Shortcuts</h2>
+<div class="tw"><table>
+<tr><th>Key</th><th>Action</th></tr>
+<tr><td><kbd>F1</kbd></td><td>Help</td></tr>
+<tr><td><kbd>F3</kbd></td><td>Tool output viewer</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Cancel processing</td></tr>
+<tr><td><kbd>Tab</kbd></td><td>Cycle agents</td></tr>
+<tr><td><kbd>Ctrl+X</kbd> <kbd>n</kbd></td><td>New session</td></tr>
+<tr><td><kbd>Ctrl+X</kbd> <kbd>u</kbd></td><td>Undo</td></tr>
+<tr><td><kbd>Ctrl+X</kbd> <kbd>r</kbd></td><td>Redo</td></tr>
+<tr><td><kbd>Ctrl+X</kbd> <kbd>m</kbd></td><td>Models picker</td></tr>
+<tr><td><kbd>Ctrl+X</kbd> <kbd>t</kbd></td><td>Themes picker</td></tr>
+<tr><td><kbd>Ctrl+X</kbd> <kbd>q</kbd></td><td>Quit</td></tr>
+</table></div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="providers">Providers</h2>
+<div class="tw"><table>
+<tr><th>Provider</th><th>Key</th><th>Auth</th></tr>
+<tr><td><strong>Anthropic</strong></td><td><code>anthropic</code></td><td>API key or OAuth</td></tr>
+<tr><td><strong>OpenRouter</strong></td><td><code>openrouter</code></td><td>API key, 200+ models</td></tr>
+<tr><td><strong>OpenCode Zen</strong></td><td><code>opencode_zen</code></td><td>Curated models</td></tr>
+<tr><td><strong>Harness Agent</strong></td><td><code>harness_agent</code></td><td>Free tier</td></tr>
+</table></div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="agents">Agents</h2>
+<p><strong>Reusable markdown files</strong> with YAML frontmatter that add a system-prompt addon.</p>
+<pre><code class="language-yaml"># .harness/agents/reviewer.md
 ---
 name: reviewer
-description: Code review specialist — thorough, security-aware
+description: Code review specialist
 icon: "🔍"
-color: "#58a6ff"
 ---
-
 You are a code review specialist. Focus on:
-1. Security vulnerabilities (injection, XSS, auth bypass)
-2. Performance bottlenecks (N+1 queries, memory leaks)
-3. Edge cases (empty states, concurrent access)
-4. Code style &amp; maintainability
+1. Security vulnerabilities
+2. Performance bottlenecks
+3. Edge cases</code></pre>
 
-Always provide specific line-level feedback with code suggestions.</code></pre>
+<h3>Global agents — import from Claude Code, OpenCode, Cursor</h3>
+<div class="tw"><table>
+<tr><th>Source</th><th>Path</th></tr>
+<tr><td><strong>Jarvis</strong></td><td><code>~/.harness/agents/</code></td></tr>
+<tr><td><strong>Claude Code</strong></td><td><code>~/.claude/agents/</code></td></tr>
+<tr><td><strong>OpenCode</strong></td><td><code>~/.config/opencode/agents/</code></td></tr>
+<tr><td><strong>Cursor</strong></td><td><code>~/.cursor/agents/</code></td></tr>
+</table></div>
+<div class="co i">Press <kbd>e</kbd> to export, <kbd>i</kbd> to import in the agent picker.</div>
+</section>
 
-    <h3>Global Agents — import from Claude Code, OpenCode, Cursor</h3>
-    <p>Jarvis automatically discovers agents from other AI coding tools. With <strong>global agent scope</strong>
-      enabled (press <kbd>g</kbd> in the agent picker or run <code>/agent global on</code>), agents from these sources
-      are available instantly:</p>
-    <table>
-      <tr>
-        <th>Source</th>
-        <th>Path scanned</th>
-      </tr>
-      <tr>
-        <td><strong>Jarvis (default)</strong></td>
-        <td><code>~/.harness/agents/</code></td>
-      </tr>
-      <tr>
-        <td><strong>Claude Code</strong></td>
-        <td><code>~/.claude/agents/</code></td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode</strong></td>
-        <td><code>~/.config/opencode/agents/</code></td>
-      </tr>
-      <tr>
-        <td><strong>Cursor</strong></td>
-        <td><code>~/.cursor/agents/</code></td>
-      </tr>
-    </table>
-    <p>On the project level, agents are also discovered from <code>.harness/agents/</code>,
-      <code>.claude/agents/</code>, <code>.opencode/agents/</code>, <code>.agents/</code>, and
-      <code>.cursor/agents/</code> — always scanned, no toggle needed.</p>
+<hr>
 
-    <div class="callout info">
-      <strong>Export/import with one key press:</strong> In the agent picker (<code>/agent</code>), press <kbd>e</kbd>
-      to export a project agent to global scope, or <kbd>i</kbd> to import a global agent into your project. Single-key,
-      zero-copy.
-    </div>
-
-    <h3>Structure</h3>
-    <p>Place agents in these directories (scanned in order, first found wins by name):</p>
-    <h4>Project (always scanned)</h4>
-    <ul>
-      <li><code>.harness/agents/&lt;name&gt;.md</code></li>
-      <li><code>.claude/agents/&lt;name&gt;.md</code></li>
-      <li><code>.opencode/agents/&lt;name&gt;.md</code></li>
-      <li><code>.agents/&lt;name&gt;.md</code></li>
-      <li><code>.cursor/agents/&lt;name&gt;.md</code></li>
-    </ul>
-    <h4>Global (opt-in via <code>/agent global on</code>)</h4>
-    <ul>
-      <li><code>~/.harness/agents/&lt;name&gt;.md</code></li>
-      <li><code>~/.claude/agents/&lt;name&gt;.md</code></li>
-      <li><code>~/.config/opencode/agents/&lt;name&gt;.md</code></li>
-    </ul>
-
-    <h3>Commands</h3>
-    <table>
-      <tr>
-        <th>Command</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td><code>/agent</code></td>
-        <td>Open agent picker</td>
-      </tr>
-      <tr>
-        <td><code>/agent &lt;name&gt;</code></td>
-        <td>Activate agent by name</td>
-      </tr>
-      <tr>
-        <td><code>/agent new &lt;name&gt;</code></td>
-        <td>Scaffold a new agent</td>
-      </tr>
-      <tr>
-        <td><code>/agent refresh</code></td>
-        <td>Re-scan directories for new agents</td>
-      </tr>
-      <tr>
-        <td><code>/agent global on|off</code></td>
-        <td>Toggle global agent discovery</td>
-      </tr>
-      <tr>
-        <td><code>/agent off</code></td>
-        <td>Deactivate current agent</td>
-      </tr>
-    </table>
-
-    <h3>Bundled defaults</h3>
-    <p>Jarvis ships with built-in agents seeded on first run: <strong>coding</strong> (default),
-      <strong>reverse_eng</strong> (reverse engineering), <strong>setup</strong> (project setup), <strong>fast</strong>,
-      <strong>qa-help</strong>, and <strong>debugger</strong>.</p>
-    <h2 id="skills">Skills</h2>
-    <p>Skills are <strong>instruction packs</strong> (SKILL.md files) that the LLM auto-loads when its description
-      matches the task. Unlike agents, skills are <strong>automatically invoked</strong> — the model decides when to
-      load them.</p>
-
-    <h3>Creating a skill</h3>
-    <pre><code># .skills/security-review/SKILL.md
+<section class="fd">
+<h2 id="skills">Skills</h2>
+<p><strong>Instruction packs</strong> (SKILL.md) that the LLM auto-loads when the description matches.</p>
+<pre><code class="language-yaml"># .skills/security-review/SKILL.md
 ---
 name: security-review
-description: Audit code for OWASP Top 10 vulnerabilities, injected dependencies, and hardcoded secrets. Use whenever you see auth code, database queries, or user input handling.
-compatibility: "Anthropic, OpenRouter, OpenCode"
----
-
-## Security Review Checklist
-
-1. Check for SQL injection — raw string interpolation in queries
-2. Check for XSS — unescaped user input in templates/HTML
-3. Check for hardcoded secrets — API keys, tokens, passwords
-4. Check authentication — weak password rules, missing MFA
-5. Check authorization — missing role checks, IDOR patterns
-6. Check dependency — known vulnerable versions
-7. Check output encoding — Content-Type, CSP headers</code></pre>
-
-    <h3>Global Skills — import from Claude Code, OpenCode, Cursor</h3>
-    <p>Skills from other AI coding tools are automatically discoverable when global scope is enabled
-      (<code>/skills global on</code>). Sources include:</p>
-    <table>
-      <tr>
-        <th>Source</th>
-        <th>Path scanned</th>
-      </tr>
-      <tr>
-        <td><strong>Jarvis (default)</strong></td>
-        <td><code>~/.harness/skills/</code></td>
-      </tr>
-      <tr>
-        <td><strong>Claude Code</strong></td>
-        <td><code>~/.claude/skills/</code></td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode</strong></td>
-        <td><code>~/.config/opencode/skills/</code></td>
-      </tr>
-      <tr>
-        <td><strong>Jarvis global</strong></td>
-        <td><code>~/.config/harness-agent/skills/</code></td>
-      </tr>
-    </table>
-    <p>Project-level skills are discovered from <code>.harness/skills/</code>, <code>.skills/</code>,
-      <code>.opencode/skills/</code>, <code>.claude/skills/</code>, and <code>.agents/skills/</code> — always scanned,
-      no toggle needed.</p>
-
-    <div class="callout info">
-      <strong>Export/import with one key press:</strong> In the skill browser (<code>/skills</code>), press <kbd>e</kbd>
-      to export a project skill to global scope, or <kbd>i</kbd> to import a global skill into your project.
-    </div>
-
-    <h3>Structure</h3>
-    <p>Skills live in directories named after the skill:</p>
-    <ul>
-      <li><code>.harness/skills/&lt;name&gt;/SKILL.md</code> (primary)</li>
-      <li><code>.skills/&lt;name&gt;/SKILL.md</code> (legacy)</li>
-      <li><code>.opencode/skills/&lt;name&gt;/SKILL.md</code> (OpenCode compat)</li>
-      <li><code>.claude/skills/&lt;name&gt;/SKILL.md</code> (Claude compat)</li>
-    </ul>
-
-    <h3>Commands</h3>
-    <table>
-      <tr>
-        <th>Command</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td><code>/skill</code> or <code>/skills</code></td>
-        <td>Browse available skills</td>
-      </tr>
-      <tr>
-        <td><code>/skill &lt;name&gt;</code></td>
-        <td>Search/select a skill</td>
-      </tr>
-      <tr>
-        <td><code>/skills global on|off</code></td>
-        <td>Toggle global skill discovery</td>
-      </tr>
-    </table>
-    <h2 id="commands">Custom Commands</h2>
-    <p>Custom commands are <strong>user-defined prompt templates</strong>. Drop a markdown file into
-      <code>.harness/commands/</code> and trigger it with <code>/&lt;name&gt;</code>.</p>
-
-    <h3>Example</h3>
-    <pre><code># .harness/commands/pr-description.md
----
-name: pr-description
-description: Generate a PR description from the current branch diff
-argument-hint: "[focus area]"
----
-
-You are a PR description writer. Based on the current git diff and the branch name,
-write a clear, structured pull request description with:
-
-## Summary
-(one paragraph)
-
-## Changes
-- list key changes
-
-## Testing
-- how to test
-
-## Related issues
-Fixes #
-
-Branch: $(git rev-parse --abbrev-ref HEAD)
-
-$ARGUMENTS</code></pre>
-
-    <h3>Template placeholders</h3>
-    <table>
-      <tr>
-        <th>Placeholder</th>
-        <th>Substitution</th>
-      </tr>
-      <tr>
-        <td><code>$ARGUMENTS</code></td>
-        <td>Everything typed after <code>/&lt;name&gt;</code></td>
-      </tr>
-      <tr>
-        <td><code>$1</code> … <code>$9</code></td>
-        <td>Positional arguments (shlex-aware)</td>
-      </tr>
-    </table>
-    <p>If arguments are given but no placeholder exists, they're appended on a new line.</p>
-
-    <h3>Commands</h3>
-    <table>
-      <tr>
-        <th>Command</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td><code>/command</code></td>
-        <td>Open command manager modal</td>
-      </tr>
-      <tr>
-        <td><code>/command new &lt;name&gt;</code></td>
-        <td>Create a new command</td>
-      </tr>
-      <tr>
-        <td><code>/command edit &lt;name&gt;</code></td>
-        <td>Edit existing command</td>
-      </tr>
-      <tr>
-        <td><code>/command delete &lt;name&gt;</code></td>
-        <td>Delete a command</td>
-      </tr>
-      <tr>
-        <td><code>/command refresh</code></td>
-        <td>Re-scan directories</td>
-      </tr>
-      <tr>
-        <td><code>/command export &lt;name&gt;</code></td>
-        <td>Export project→global</td>
-      </tr>
-      <tr>
-        <td><code>/command import &lt;name&gt;</code></td>
-        <td>Import global→project</td>
-      </tr>
-      <tr>
-        <td><code>/command run &lt;name&gt; [args]</code></td>
-        <td>Run a command explicitly</td>
-      </tr>
-    </table>
-
-    <hr>
-
-    <!-- ──────────────── MCP ──────────────── -->
-    <h2 id="mcp">MCP Support</h2>
-    <p>Jarvis supports the <strong>Model Context Protocol</strong> (MCP) for connecting external tools and data sources.
-      MCP servers add dynamically discovered tools that the agent can use.</p>
-
-    <h3>Quick start</h3>
-    <p>Type <code>/mcp</code> in the TUI to open the MCP manager. Here you can:</p>
-    <ul>
-      <li><strong>Connect</strong> to MCP servers defined in <code>.mcp.json</code></li>
-      <li><strong>Toggle global scope</strong> — press <kbd>g</kbd> to include MCP servers from Claude Code, OpenCode,
-        Cursor</li>
-      <li><strong>View</strong> available tools from connected servers</li>
-      <li><strong>Disconnect</strong> servers as needed</li>
-    </ul>
-
-    <h3>Global MCP — import from other tools</h3>
-    <p>Jarvis can adopt MCP servers that were configured for <strong>Claude Code</strong>, <strong>OpenCode</strong>, or
-      <strong>Cursor</strong>. Toggle global scope with a single key press (<kbd>g</kbd>) in the MCP manager.</p>
-
-    <p>Global MCP sources (loaded when global scope is on):</p>
-    <table>
-      <tr>
-        <th>Source</th>
-        <th>Config file</th>
-      </tr>
-      <tr>
-        <td><strong>Claude Code</strong></td>
-        <td><code>~/.claude/settings.json</code> (mcpServers)</td>
-      </tr>
-      <tr>
-        <td><strong>OpenCode</strong></td>
-        <td><code>~/.config/opencode/mcp.json</code></td>
-      </tr>
-      <tr>
-        <td><strong>Cursor</strong></td>
-        <td><code>~/.cursor/mcp.json</code></td>
-      </tr>
-      <tr>
-        <td><strong>Legacy Claude</strong></td>
-        <td><code>~/.config/claude/mcp.json</code></td>
-      </tr>
-    </table>
-
-    <div class="callout info">
-      <strong>One press to rule them all:</strong> Press <kbd>g</kbd> in the <code>/mcp</code> modal to instantly import
-      ALL MCP servers from every supported tool. No manual copying needed.
-    </div>
-
-    <h3>Project scope</h3>
-    <p>By default, only the project's <code>.mcp.json</code> is loaded (project scope). Enable global scope with
-      <code>/mcp</code> → press <kbd>g</kbd> to include MCP servers from global config files.</p>
-
-    <div class="callout warn">
-      <strong>Privacy:</strong> Global MCP servers from <code>~/.cursor</code>, <code>~/.claude</code>,
-      <code>~/.config/opencode</code> are only loaded when you explicitly toggle global scope on.
-    </div>
-    <h2 id="memory">Memory</h2>
-    <p>Jarvis remembers facts about you across sessions using persistent JSON storage. It proactively saves information
-      it learns without asking.</p>
-
-    <pre><code>/memory       # View all stored facts (modal)
-/memories     # Same as /memory</code></pre>
-
-    <h3>How it works</h3>
-    <ul>
-      <li>The agent calls <code>memory_save</code> when it learns something about you</li>
-      <li>Facts are stored in <code>~/.config/harness-agent/memory.json</code></li>
-      <li>Facts are injected into the system prompt on every session start</li>
-      <li>Deduplication — duplicate facts are silently skipped</li>
-      <li>Thread-safe — concurrent tool calls don't race on read/write</li>
-    </ul>
-
-    <h3>Storage format</h3>
-    <pre><code>{
-  "facts": [
-    { "id": 1, "text": "name: Prajwal", "ts": 1710000000 },
-    { "id": 2, "text": "preferred editor: VS Code", "ts": 1710000100 }
-  ],
-  "next_id": 3
-}</code></pre>
-
-    <hr>
-
-    <!-- ──────────────── LESSONS ──────────────── -->
-    <h2 id="lessons">Lessons</h2>
-    <p>Lessons are the agent's <strong>self-learning system</strong>. It stores patterns → solutions so future similar
-      tasks are faster with fewer tool calls.</p>
-
-    <pre><code>/lesson "git rebase"     # Search lessons by topic
-/lesson                  # Open lesson manager
-/lessons                 # Same as /lesson</code></pre>
-
-    <h3>How it works</h3>
-    <ul>
-      <li>Agent calls <code>lesson_save</code> when it discovers a reusable pattern</li>
-      <li>Up to 8 relevant lessons are injected into the system prompt each turn</li>
-      <li>Lessons are tagged with topics for searchability</li>
-      <li>Max 200 entries; oldest low-hit lessons are pruned</li>
-      <li>Each lesson tracks hit count for relevance scoring</li>
-    </ul>
-
-    <h3>Storage</h3>
-    <p>Lessons are stored at <code>~/.config/harness-agent/lessons.json</code>.</p>
-
-    <hr>
-
-    <!-- ──────────────── PROJECT CONTEXT ──────────────── -->
-    <h2 id="context">Project Context</h2>
-    <p>Jarvis automatically detects project context files and loads them as reference. This helps the agent understand
-      your project's structure, patterns, and conventions.</p>
-
-    <h3>Supported files</h3>
-    <p>Detected in priority order (first found wins):</p>
-    <ol>
-      <li><code>AGENTS.md</code></li>
-      <li><code>AGENT.md</code></li>
-      <li><code>CLAUDE.md</code></li>
-      <li><code>JARVIS.md</code></li>
-    </ol>
-
-    <p>Only the path is stored at startup; content is loaded on demand via <code>read_file()</code>. The status bar
-      shows which context file was found.</p>
-
-    <div class="callout info">
-      <strong>Tip:</strong> Commit your project's <code>AGENTS.md</code> file to Git. This helps Jarvis understand the
-      project structure and coding patterns used.
-    </div>
-
-    <hr>
-
-    <!-- ──────────────── SESSIONS ──────────────── -->
-    <h2 id="sessions">Sessions</h2>
-    <p>Jarvis persists your conversations using SQLite. Sessions are auto-saved with timestamps and model metadata.</p>
-
-    <pre><code>/sessions            # List all saved sessions
-/session list        # List sessions
-/session switch 3    # Switch to session #3
-/session delete 3    # Delete session #3
-/export              # Export current session to markdown
-/import              # Import a session from file</code></pre>
-
-    <h3>Storage</h3>
-    <p>Sessions are stored at <code>~/.config/harness-agent/sessions.db</code>.</p>
-
-    <h3>Data model</h3>
-    <table>
-      <tr>
-        <th>Table</th>
-        <th>Columns</th>
-      </tr>
-      <tr>
-        <td><code>sessions</code></td>
-        <td>id, title, model, created_at, updated_at</td>
-      </tr>
-      <tr>
-        <td><code>messages</code></td>
-        <td>id, session_id, idx, role, content_json, created_at</td>
-      </tr>
-    </table>
-
-    <hr>
-
-    <!-- ──────────────── PINNED CONTEXT ──────────────── -->
-    <h2 id="pin">Pinned Context — Always-On Prompt</h2>
-    <p>Pinned context is text that's <strong>always injected into the system prompt</strong> — it goes with
-      <strong>every single prompt</strong> you send. Use it for instructions you want Jarvis to follow in every session,
-      without having to repeat them.</p>
-
-    <div class="callout info">
-      <strong>Always on:</strong> Unlike a one-shot instruction, pinned context is injected before every message. It's
-      always there — you don't need to remind the model each time.
-    </div>
-
-    <h3>Commands</h3>
-    <table>
-      <tr>
-        <th>Command</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td><code>/pin</code></td>
-        <td>Open pin manager</td>
-      </tr>
-      <tr>
-        <td><code>/pin set &lt;text&gt;</code></td>
-        <td>Set pinned context (replaces existing)</td>
-      </tr>
-      <tr>
-        <td><code>/pin clear</code></td>
-        <td>Clear pinned context</td>
-      </tr>
-      <tr>
-        <td><code>/pin toggle</code></td>
-        <td>Enable/disable injection</td>
-      </tr>
-      <tr>
-        <td><code>/pin on</code></td>
-        <td>Enable pinned context</td>
-      </tr>
-      <tr>
-        <td><code>/pin off</code></td>
-        <td>Disable pinned context</td>
-      </tr>
-    </table>
-
-    <h3>Use cases</h3>
-    <ul>
-      <li><strong>Code style:</strong> "Always use tabs, 2-space indentation, single quotes"</li>
-      <li><strong>Test requirements:</strong> "Run pytest before every commit"</li>
-      <li><strong>Security policies:</strong> "Never output real API keys, always redact secrets"</li>
-      <li><strong>Project conventions:</strong> "Branch names follow: feature/PROJ-123-description"</li>
-      <li><strong>Behavior rules:</strong> "Always ask before writing to files outside the project"</li>
-      <li><strong>Formatting:</strong> "Use TypeScript strict mode, no `any` types"</li>
-      <li><strong>Communication:</strong> "Respond in Hindi if I ask in Hindi"</li>
-    </ul>
-
-    <h3>Persistence</h3>
-    <p>Pinned context is stored at <code>~/.config/harness-agent/pinned.txt</code>. It persists across sessions and
-      restarts. Toggle injection on/off with <code>/pin toggle</code> without losing your pinned text.</p>
-    <h2 id="no-jail">No Project Jail</h2>
-    <p>Unlike most AI coding agents that lock you inside the current working directory, <strong>Jarvis has no project
-        jail</strong>. It can read, write, and list files anywhere on your machine — the project root is just a default,
-      not a cage.</p>
-
-    <div class="callout info">
-      <strong>Full filesystem access:</strong> You can reference files outside the project root with
-      <code>allow_outside_project=true</code>. Tools like <code>read_file</code>, <code>write_file</code>,
-      <code>edit_file</code>, <code>list_dir</code>, <code>search_code</code>, <code>glob_files</code>,
-      <code>fast_find</code>, and <code>read_document</code> all support working <strong>anywhere</strong> on your Mac.
-    </div>
-
-    <h3>How it works</h3>
-    <table>
-      <tr>
-        <th>Tool</th>
-        <th>Outside-project access</th>
-      </tr>
-      <tr>
-        <td><code>read_file</code></td>
-        <td>Use <code>force=true</code> for any file on disk</td>
-      </tr>
-      <tr>
-        <td><code>write_file</code></td>
-        <td>Use <code>allow_outside_project=true</code></td>
-      </tr>
-      <tr>
-        <td><code>edit_file</code></td>
-        <td>Use <code>allow_outside_project=true</code></td>
-      </tr>
-      <tr>
-        <td><code>list_dir</code></td>
-        <td>Use <code>allow_outside_project=true</code> for any directory</td>
-      </tr>
-      <tr>
-        <td><code>fast_find</code></td>
-        <td>Spotlight search across entire Mac — <code>path=~/Desktop</code>, <code>path=/Applications</code>, or whole
-          system</td>
-      </tr>
-      <tr>
-        <td><code>read_document</code></td>
-        <td>Use <code>force=true</code> for PDFs, images, spreadsheets anywhere</td>
-      </tr>
-      <tr>
-        <td><code>search_code</code></td>
-        <td>Use <code>allow_outside_project=true</code> to search any folder</td>
-      </tr>
-    </table>
-
-    <h3>Use cases</h3>
-    <ul>
-      <li>Read configs from <code>~/.config/</code> or <code>~/.ssh/</code></li>
-      <li>Inspect logs in <code>/var/log/</code> or <code>~/Library/Logs/</code></li>
-      <li>Edit dotfiles in your home directory</li>
-      <li>Search code in sibling projects</li>
-      <li>Read install receipts, plists, or system files</li>
-      <li>Glob files across <code>~/Downloads</code>, <code>~/Desktop</code>, <code>~/Documents</code></li>
-    </ul>
-
-    <div class="callout warn">
-      <strong>Safety first:</strong> Outside-project access requires explicit opt-in per call (<code>force</code> /
-      <code>allow_outside_project</code>). Jarvis never reads outside the project without being told to.
-    </div>
-
-
-    <!-- ──────────────── TROUBLESHOOTING ──────────────── -->
-    <h2 id="troubleshooting">Troubleshooting</h2>
-
-    <h3>Jarvis won't start</h3>
-    <p><strong>Most common cause:</strong> Python version. macOS ships with Python 3.8 or older. Install Python 3.10+:
-    </p>
-    <pre><code>brew install python@3.11</code></pre>
-
-    <h3>"command not found: jarvis"</h3>
-    <p>Your shell can't find the binary. Add it to PATH:</p>
-    <pre><code>export PATH="$HOME/.local/bin:$PATH"
-# Add to ~/.zshrc to make permanent</code></pre>
-
-    <h3>Authentication issues</h3>
-    <ul>
-      <li>Check <code>ANTHROPIC_API_KEY</code> is set: <code>echo $ANTHROPIC_API_KEY</code></li>
-      <li>Run <code>/login</code> to re-authenticate with OAuth</li>
-      <li>Run <code>/key</code> to enter a new API key</li>
-      <li>Check <code>HARNESS_PROVIDER</code> env var if pinned to wrong provider</li>
-    </ul>
-
-    <h3>Model not available</h3>
-    <ul>
-      <li>Run <code>/models</code> to see available models</li>
-      <li>Run <code>/provider</code> to switch providers</li>
-      <li>Check your account has access to the model tier</li>
-    </ul>
-
-    <h3>macOS accessibility denied</h3>
-    <p>If Jarvis can't read the UI or click elements:</p>
-    <ol>
-      <li>Open System Settings → Privacy &amp; Security → Accessibility</li>
-      <li>Add your terminal app (Terminal, iTerm2, Warp, etc.)</li>
-      <li>Restart your terminal</li>
-    </ol>
-
-    <h3>Logs</h3>
-    <p>Jarvis writes logs to the console during operation. For debugging, run with more verbose output by checking the
-      <code>HARNESS_*</code> debug environment variables.</p>
-
-    <h3>Get help</h3>
-    <ul>
-      <li>Type <code>/help</code> in the TUI to see all commands</li>
-      <li>Check the GitHub repo for issues</li>
-      <li>File a bug report with session export (<code>/export</code>)</li>
-    </ul>
-
-    <hr>
-
-    <p style="text-align:center;margin-top:3rem;font-size:.82rem;color:#6a6a8a">
-      Jarvis — The Harness Agent &bull; Built with ❤️ by Prajwal
-    </p>
-
-  </main>
-
-  <script>
-    // ── theme toggle ──
-    function toggleTheme() {
-      const html = document.documentElement;
-      const btn = document.getElementById('theme-toggle');
-      if (html.getAttribute('data-theme') === 'dark') {
-        html.setAttribute('data-theme', 'light');
-        btn.textContent = '☾';
-      } else {
-        html.setAttribute('data-theme', 'dark');
-        btn.textContent = '☀';
-      }
-    }
-
-    // ── scroll progress ──
-    const progress = document.getElementById('progress');
-    window.addEventListener('scroll', () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      progress.style.width = Math.min(100, (window.scrollY / h) * 100) + '%';
-    });
-
-    // ── nav highlight ──
-    const links = document.querySelectorAll('nav a');
-    const sections = [...document.querySelectorAll('main h2')].map(h => h.id);
-    window.addEventListener('scroll', () => {
-      let active = 'intro';
-      for (const id of sections) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top < 200) active = id;
-      }
-      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active));
-    });
-
-    // ── search ──
-    function filterNav() {
-      const q = document.getElementById('search').value.toLowerCase().trim();
-      links.forEach(a => {
-        if (!q) { a.style.display = ''; return; }
-        const txt = a.textContent.toLowerCase();
-        a.style.display = txt.includes(q) ? '' : 'none';
-      });
-    }
-
-    // ── smooth scroll for nav clicks ──
-    links.forEach(a => {
-      a.addEventListener('click', e => {
-        const id = a.getAttribute('href').slice(1);
-        const el = document.getElementById(id);
-        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-      });
-    });
-  </script>
-
+description: Audit code for OWASP Top 10
+---</code></pre>
+
+<h3>Global skills — import from other tools</h3>
+<div class="tw"><table>
+<tr><th>Source</th><th>Path</th></tr>
+<tr><td><strong>Jarvis</strong></td><td><code>~/.harness/skills/</code></td></tr>
+<tr><td><strong>Claude Code</strong></td><td><code>~/.claude/skills/</code></td></tr>
+<tr><td><strong>OpenCode</strong></td><td><code>~/.config/opencode/skills/</code></td></tr>
+</table></div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="mcp">MCP Support</h2>
+<p>Type <code>/mcp</code> to open the manager. Connect servers from <code>.mcp.json</code>, press <kbd>g</kbd> for global.</p>
+<h3>Global MCP — import from Claude Code, OpenCode, Cursor</h3>
+<div class="tw"><table>
+<tr><th>Source</th><th>Config</th></tr>
+<tr><td><strong>Claude Code</strong></td><td><code>~/.claude/settings.json</code></td></tr>
+<tr><td><strong>OpenCode</strong></td><td><code>~/.config/opencode/mcp.json</code></td></tr>
+<tr><td><strong>Cursor</strong></td><td><code>~/.cursor/mcp.json</code></td></tr>
+</table></div>
+<div class="co i">Press <kbd>g</kbd> in the MCP modal to instantly import all servers.</div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="memory">Memory</h2>
+<p>Jarvis remembers facts about you across sessions. Stored in <code>~/.config/harness-agent/memory.json</code>.</p>
+<pre><code class="language-bash">/memory   # View all stored facts</code></pre>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="lessons">Lessons</h2>
+<p>The agent's <strong>self-learning system</strong>. Patterns → solutions, hit-based relevance, max 200 entries.</p>
+<pre><code class="language-bash">/lesson "git rebase"   # Search lessons
+/lessons               # Open manager</code></pre>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="context">Project Context</h2>
+<p>Auto-detected in priority: <code>AGENTS.md</code> → <code>AGENT.md</code> → <code>CLAUDE.md</code> → <code>JARVIS.md</code>.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="sessions">Sessions</h2>
+<p>SQLite-persisted conversations at <code>~/.config/harness-agent/sessions.db</code>.</p>
+<pre><code class="language-bash">/sessions         # List all
+/session switch 3 # Switch
+/export           # Export to markdown</code></pre>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="pin">Pinned Context — Always-On Prompt</h2>
+<p>Text injected with <strong>every single prompt</strong>. Stored in <code>~/.config/harness-agent/pinned.txt</code>.</p>
+<div class="co i">Unlike a one-shot instruction, pinned context is injected before every message.</div>
+<div class="tw"><table>
+<tr><th>Command</th><th>Action</th></tr>
+<tr><td><code>/pin set &lt;text&gt;</code></td><td>Set pinned context</td></tr>
+<tr><td><code>/pin clear</code></td><td>Clear</td></tr>
+<tr><td><code>/pin toggle</code></td><td>Enable/disable</td></tr>
+</table></div>
+<p>Use cases: code style rules, security policies, behavior instructions, formatting preferences.</p>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="no-jail">No Project Jail</h2>
+<p>Jarvis reads/writes/list files <strong>anywhere on your machine</strong> — not locked to CWD.</p>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Flag</th></tr>
+<tr><td><code>read_file</code></td><td><code>force=true</code></td></tr>
+<tr><td><code>write_file</code></td><td><code>allow_outside_project=true</code></td></tr>
+<tr><td><code>edit_file</code></td><td><code>allow_outside_project=true</code></td></tr>
+<tr><td><code>fast_find</code></td><td>Spotlight across entire Mac</td></tr>
+</table></div>
+<div class="co w">Requires explicit opt-in per call.</div>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="faq">FAQ</h2>
+<details class="fq"><summary><span class="fi">▸</span> How do I update Jarvis?</summary><div class="fb"><p>Run <code>/upgrade</code> in the TUI. It pulls the latest version from GitHub.</p></div></details>
+<details class="fq"><summary><span class="fi">▸</span> Can I use Jarvis offline?</summary><div class="fb"><p>Core file/git/shell tools work offline. The LLM needs an internet connection for API calls.</p></div></details>
+<details class="fq"><summary><span class="fi">▸</span> Does it work on Linux or Windows?</summary><div class="fb"><p>Core agent works on any platform. macOS control tools are macOS-only.</p></div></details>
+<details class="fq"><summary><span class="fi">▸</span> How do I switch providers?</summary><div class="fb"><p>Type <code>/provider</code> in the TUI or set <code>HARNESS_PROVIDER</code> env var.</p></div></details>
+<details class="fq"><summary><span class="fi">▸</span> How is my data handled?</summary><div class="fb"><p>All data is local — SQLite sessions, JSON memory. No telemetry sent anywhere.</p></div></details>
+</section>
+
+<hr>
+
+<section class="fd">
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3>Jarvis won't start</h3>
+<pre><code class="language-bash">brew install python@3.11</code></pre>
+<h3>"command not found: jarvis"</h3>
+<pre><code class="language-bash">export PATH="$HOME/.local/bin:$PATH"</code></pre>
+<h3>Authentication issues</h3>
+<ul><li>Check <code>ANTHROPIC_API_KEY</code>: <code>echo $ANTHROPIC_API_KEY</code></li><li>Run <code>/login</code> to re-authenticate</li></ul>
+<h3>macOS accessibility denied</h3>
+<ol><li>System Settings → Privacy → Accessibility</li><li>Add your terminal app</li><li>Restart terminal</li></ol>
+</section>
+
+<hr>
+<p style="text-align:center;margin-top:3rem;font-size:.78rem;color:var(--text3)">Jarvis — The Harness Agent &bull; Built with ❤️</p>
+</main>
+
+<script>
+(function(){const e=document.getElementById('ld');if(e){const d=new Date();e.textContent=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getFullYear()}})();
+
+const h=document.documentElement,tb=document.getElementById('tt');
+tb.addEventListener('click',()=>{if(h.getAttribute('data-theme')==='dark'){h.setAttribute('data-theme','light');tb.textContent='☾'}else{h.setAttribute('data-theme','dark');tb.textContent='☀'}});
+
+const pr=document.getElementById('pr');
+window.addEventListener('scroll',()=>{const p=document.documentElement.scrollHeight-window.innerHeight;pr.style.width=Math.min(100,(window.scrollY/p)*100)+'%'});
+
+const bt=document.getElementById('bt');
+window.addEventListener('scroll',()=>bt.classList.toggle('v',window.scrollY>400));
+bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+const nt=document.getElementById('nt'),sb=document.getElementById('sb'),no=document.getElementById('no');
+function cn(){sb.classList.remove('s');no.classList.remove('s')}
+nt.addEventListener('click',()=>{sb.classList.toggle('s');no.classList.toggle('s')});
+no.addEventListener('click',cn);
+document.querySelectorAll('#sb a').forEach(a=>a.addEventListener('click',cn));
+
+const al=document.querySelectorAll('#sb a');
+const hs=[...document.querySelectorAll('main h2[id]')];
+const tl=document.getElementById('tl');const sn=new Set();
+hs.forEach(hh=>{const id=hh.id;if(sn.has(id))return;sn.add(id);
+  const a=document.createElement('a');a.href='#'+id;
+  a.textContent=hh.textContent.replace(/[¶#]\s*$/,'').trim();tl.appendChild(a);
+  let s=hh.nextElementSibling;
+  while(s&&s.tagName!=='H2'){if(s.tagName==='H3'&&s.id){const su=document.createElement('a');su.href='#'+s.id;su.textContent=s.textContent.replace(/[¶#]\s*$/,'').trim();su.className='h3';tl.appendChild(su)}s=s.nextElementSibling}});
+window.addEventListener('scroll',()=>{let act='intro',al2=null;
+  hs.forEach(hh=>{if(hh.getBoundingClientRect().top<200)act=hh.id});
+  al.forEach(a=>{const m=a.getAttribute('href')==='#'+act;a.classList.toggle('on',m);if(m)al2=a});
+  document.querySelectorAll('#pt a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+act));
+  if(al2)try{al2.scrollIntoView({block:'nearest'})}catch(e){}});
+
+document.querySelectorAll('h2[id],h3[id]').forEach(hh=>{const a=document.createElement('a');a.className='an';a.href='#'+hh.id;a.textContent='¶';a.setAttribute('aria-label','Permalink');hh.appendChild(a)});
+
+const ts=document.createElement('div');ts.className='ts';document.body.appendChild(ts);
+function st(msg,ms=2500){ts.innerHTML=msg;ts.classList.add('s');clearTimeout(ts._t);ts._t=setTimeout(()=>ts.classList.remove('s'),ms)}
+document.addEventListener('click',e=>{const b=e.target.closest('.cpy');if(b&&b.textContent==='Copied!')st('Copied to clipboard')});
+
+const ob=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');ob.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('.fd').forEach(e=>ob.observe(e));
+
+const q=document.getElementById('q'),qr=document.getElementById('qr');
+q.addEventListener('input',()=>{const v=q.value.toLowerCase().trim();let c=0;
+  al.forEach(a=>{const t=a.textContent.toLowerCase();const m=v&&t.includes(v);a.classList.toggle('hide',!!v&&!m);if(m)c++});
+  qr.textContent=v?c+' result'+(c!==1?'s':''):'';qr.classList.toggle('s',!!v)});
+
+document.querySelectorAll('pre').forEach(pre=>{if(pre.querySelector('.cpy'))return;
+  const code=pre.querySelector('code');if(!code)return;
+  const lm=code.className.match(/language-(\w+)/);
+  if(lm){const lb=document.createElement('span');lb.className='lbl';lb.textContent=lm[1];pre.appendChild(lb)}
+  const btn=document.createElement('button');btn.className='cpy';btn.textContent='Copy';
+  btn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText((code.textContent.replace(/\n{3,}/g,'\n\n').trim()+'\n'));btn.textContent='Copied!';btn.classList.add('done');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done')},2000)}catch(e){}});
+  pre.appendChild(btn)});
+
+document.querySelectorAll('details.fq summary').forEach(s=>{s.addEventListener('click',e=>{if(e.shiftKey){e.preventDefault();const all=document.querySelectorAll('details.fq');const any=[...all].some(d=>d.open);all.forEach(d=>any?d.removeAttribute('open'):d.setAttribute('open',''));st(any?'Collapsed all FAQs':'Expanded all FAQs')}})});
+
+document.querySelectorAll('details.fq').forEach(d=>{d.addEventListener('toggle',()=>{const i=d.querySelector('.fi');if(i)i.textContent=d.open?'▾':'▸'})});
+</script>
 </body>
-
 </html>

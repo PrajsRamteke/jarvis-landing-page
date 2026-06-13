@@ -13,7 +13,16 @@
 </head>
 <body>
 
-  <!-- ░░ BOOT PRELOADER ░░ -->
+    <!-- ░░ MOBILE MENU ░░ -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="#install" data-hover>install</a>
+    <a href="#features" data-hover>features</a>
+    <a href="docs.html" target="_blank" rel="noopener" data-hover>docs</a>
+    <a href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" data-hover>source</a>
+  </nav>
+
+<!-- ░░ BOOT PRELOADER ░░ -->
   <div id="boot" aria-hidden="true">
     <pre id="boot-log"></pre>
     <div class="boot-skip">[ press any key to skip ]</div>
@@ -40,6 +49,9 @@
       <a href="docs.html" target="_blank" rel="noopener" data-hover>docs</a>
       <a href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" data-hover>source</a>
     </nav>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" data-hover>
+      <span></span><span></span><span></span>
+    </button>
     <div class="nav-right">
       <a class="nav-gh" href="https://github.com/PrajsRamteke/harness-agent" target="_blank" rel="noopener" data-hover aria-label="Star on GitHub">
         <i data-lucide="github"></i><span>STAR</span>
