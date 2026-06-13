@@ -64,7 +64,7 @@
       line-height: 1.7;
       min-height: 100vh;
       display: flex
-    }
+    ;overflow-x:hidden;width:100%}
 
     a {
       color: var(--accent);
@@ -95,7 +95,7 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.1rem 1.3rem;
-      overflow-x: auto;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
       margin: .9rem 0;
       line-height: 1.55;
       position: relative
@@ -351,7 +351,7 @@
       flex: 1;
       max-width: 740px;
       padding: 2rem 2.5rem 6rem
-    }
+    ;overflow-x:hidden}
 
     .bc {
       display: flex;
@@ -452,7 +452,7 @@
     }
 
     .tw {
-      overflow-x: auto;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
       margin: .8rem 0
     }
 
@@ -1026,86 +1026,132 @@
     }
 
     @media(max-width:1280px) {
-      #pt {
-        display: none
-      }
+  #pt { display: none }
+  #tt { right: 1.2rem }
+  #bt { right: 1.2rem }
+}
 
-      #tt {
-        right: 1.2rem
-      }
+@media(max-width:900px) {
+  :root { --toc-w: 0px }
+  .bc .vb { margin-left: 0 }
+  .cs { grid-template-columns: 1fr 1fr }
+}
 
-      #bt {
-        right: 1.2rem
-      }
-    }
+@media(max-width:768px) {
+  #sb { transform: translateX(-100%) }
+  #sb.s { transform: translateX(0) }
+  #nt { display: flex }
+  #no.s { display: block }
+  main { margin-left: 0; padding: 1rem .9rem 4rem }
+  .sp { left: 0 }
+  #tt { top: .6rem; right: .6rem; width: 30px; height: 30px; font-size: .9rem }
+  #bt { bottom: 1rem; right: 1rem; width: 34px; height: 34px; font-size: 1rem }
 
-    @media(max-width:768px) {
-      #sb {
-        transform: translateX(-100%)
-      }
+  /* typography */
+  h2 { font-size: 1.35rem; margin-top: 2rem }
+  h3 { font-size: 1rem; margin-top: 1.4rem }
+  h4 { font-size: .85rem }
+  p, li { font-size: .88rem }
+  code { font-size: .8em }
 
-      #sb.s {
-        transform: translateX(0)
-      }
+  /* tables */
+  .tw { margin: .6rem -0.3rem }
+  .tw table { font-size: .75rem }
+  .tw th, .tw td { padding: .35rem .4rem }
+  .tw::-webkit-scrollbar { height: 3px }
 
-      #nt {
-        display: flex
-      }
+  /* pre/code */
+  pre { font-size: .72rem; padding: .8rem 1rem; margin: .7rem 0 }
+  pre .lbl { font-size: .55rem; top: .3rem; right: .5rem }
+  pre .cpy { font-size: .58rem; top: .3rem; padding: .1rem .35rem }
+  pre .lbl + .cpy { right: 3rem }
 
-      #no.s {
-        display: block
-      }
+  /* grids */
+  .hb { grid-template-columns: 1fr; padding: .8rem 1rem; margin: 1rem 0 }
+  .hi { padding: .35rem 0 }
+  .hi div st { font-size: .78rem }
+  .hi div sp { font-size: .7rem }
+  .hn { font-size: .55rem }
 
-      main {
-        margin-left: 0;
-        padding: 1.2rem 1rem 4rem
-      }
+  .fg { grid-template-columns: 1fr 1fr; gap: .4rem; margin: .8rem 0 }
+  .fc { padding: .7rem .8rem }
+  .fc h4 { font-size: .78rem }
+  .fc p { font-size: .7rem }
+  .fc .fi svg { width: 18px; height: 18px }
 
-      .sp {
-        left: 0
-      }
+  .cg { grid-template-columns: 1fr; gap: .3rem }
+  .ci { padding: .35rem .6rem; font-size: .75rem }
+  .ci .cm { font-size: .78rem }
+  .ci .cd { font-size: .7rem }
 
-      #tt {
-        top: .7rem;
-        right: .7rem
-      }
+  .cs { grid-template-columns: 1fr 1fr; gap: .35rem }
+  .csi { padding: .5rem .65rem }
+  .csi .cc { font-size: .68rem }
+  .csi .cd { font-size: .63rem }
 
-      .hb {
-        grid-template-columns: 1fr
-      }
+  .gal { grid-template-columns: repeat(4, 1fr); gap: .35rem; margin: .6rem 0 }
+  .tc { padding: .4rem }
+  .tc .sw { height: 22px }
+  .tc .tn { font-size: .62rem }
+  .tc .sw sp { width: 12px; height: 12px }
 
-      .fg {
-        grid-template-columns: 1fr 1fr
-      }
+  /* callouts */
+  .co { padding: .65rem .8rem; font-size: .8rem; margin: .7rem 0 }
+  .co ul, .co li { font-size: .8rem }
 
-      .cg {
-        grid-template-columns: 1fr
-      }
+  /* breadcrumb */
+  .bc { font-size: .65rem; padding: .4rem 0; flex-wrap: wrap; gap: .25rem }
+  .bc .vb { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px }
 
-      .gal {
-        grid-template-columns: repeat(5, 1fr)
-      }
+  /* sections */
+  section { margin: 0 }
+  hr { margin: 1.4rem 0 }
 
-      #bt {
-        bottom: 1rem;
-        right: 1rem
-      }
-    }
+  /* remove extra whitespace */
+  ol, ul { padding-left: 1rem }
+}
 
-    @media(max-width:480px) {
-      .fg {
-        grid-template-columns: 1fr
-      }
+@media(max-width:480px) {
+  main { padding: .8rem .7rem 3rem }
+  #tt { top: .5rem; right: .5rem; width: 28px; height: 28px; font-size: .8rem }
 
-      .gal {
-        grid-template-columns: repeat(3, 1fr)
-      }
+  h2 { font-size: 1.15rem; margin-top: 1.5rem }
+  h3 { font-size: .9rem }
+  p, li { font-size: .82rem }
+  code { font-size: .76em }
 
-      h2 {
-        font-size: 1.3rem
-      }
-    }
-  </style>
+  .fg { grid-template-columns: 1fr; gap: .35rem }
+  .fc { padding: .6rem .7rem }
+  .fc .fi svg { width: 16px; height: 16px }
+
+  .tw table { font-size: .68rem }
+  .tw th, .tw td { padding: .25rem .3rem }
+
+  pre { font-size: .65rem; padding: .6rem .7rem; border-radius: 8px }
+  pre .cpy { font-size: .52rem; padding: .08rem .3rem }
+  pre .lbl { display: none }
+
+  .hb { padding: .6rem .8rem }
+  .hi div st { font-size: .74rem }
+  .hi div sp { font-size: .66rem }
+
+  .cs { grid-template-columns: 1fr }
+  .cs { gap: .3rem }
+
+  .gal { grid-template-columns: repeat(3, 1fr); gap: .25rem }
+  .tc .sw { height: 18px }
+  .tc .tn { font-size: .58rem }
+
+  .co { padding: .5rem .65rem; font-size: .75rem }
+  .bc { font-size: .6rem; gap: .2rem }
+  .bc .vb { max-width: 90px; font-size: .58rem }
+
+  .cg { gap: .25rem }
+  .ci { padding: .3rem .5rem }
+
+  ol, ul { padding-left: .8rem }
+  li { margin: .1rem 0 }
+}</style>
 </head>
 
 <body>
